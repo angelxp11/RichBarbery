@@ -1,0 +1,200 @@
+/* Estilos generales para el overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que el modal esté por encima de otros elementos */
+  }
+  
+  /* Contenedor del modal */
+  .modal-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Título del modal */
+  .modal-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  /* Formulario */
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Estilo de los grupos de input */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .input-group input,
+  .input-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-group input:focus,
+  .input-group textarea:focus {
+    border-color: #007bff; /* Color al hacer foco */
+  }
+  
+  /* Imagen de carga */
+  .upload-icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f7;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .upload-icon:hover {
+    background-color: #e9ecef; /* Cambio de color al pasar el mouse */
+  }
+  
+  .photo-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: block;
+    border: 2px solid #ddd;
+  }
+  
+  /* Botones de acción */
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .cancel-btn,
+  .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex-grow: 1;
+  }
+  
+  .cancel-btn {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #bbb;
+  }
+  
+  .submit-btn {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .submit-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Asegurar la respuesta móvil */
+  @media (max-width: 768px) {
+    .modal-container {
+      width: 90%;
+      padding: 15px;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+    }
+  
+    .cancel-btn,
+    .submit-btn {
+      flex-grow: 0;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+  
+
+  /* Estilos personalizados para los toasts */
+.Toastify__toast-container {
+  top: 20px; /* Ajusta la distancia desde la parte superior */
+  right: 20px; /* Ajusta la distancia desde la derecha */
+}
+
+.Toastify__toast {
+  background-color: #333; /* Fondo del toast */
+  color: #fff; /* Color del texto */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 12px 20px; /* Espaciado interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  font-family: 'Arial', sans-serif; /* Fuente personalizada */
+  font-size: 14px; /* Tamaño de la fuente */
+}
+
+.Toastify__toast--success {
+  background-color: #28a745; /* Fondo verde para mensajes de éxito */
+}
+
+.Toastify__toast--error {
+  background-color: #dc3545; /* Fondo rojo para mensajes de error */
+}
+
+.Toastify__toast--warning {
+  background-color: #ffc107; /* Fondo amarillo para mensajes de advertencia */
+}
+
+.Toastify__toast--info {
+  background-color: #17a2b8; /* Fondo azul para mensajes de información */
+}
+
+.Toastify__toast-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Toastify__progress-bar {
+  height: 4px;
+  background-color: #fff; /* Color de la barra de progreso */
+  border-radius: 4px; /* Bordes redondeados de la barra */
+}
+
+/* Puedes añadir más estilos para ajustar según tus necesidades */

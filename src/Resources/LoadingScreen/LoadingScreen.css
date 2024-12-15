@@ -1,0 +1,56 @@
+/* Fondo semi oscuro */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0a0a0a; /* Color negro con opacidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que el overlay esté encima de otros elementos */
+  }
+  
+  /* Contenido del overlay */
+  .loading-content {
+    text-align: center;
+  }
+  
+  /* Animación de salto */
+  @keyframes jump {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  /* Logotipo animado */
+  .loading-logo {
+    width: 400px; /* Tamaño más grande del logotipo */
+    animation: jump 1s ease-in-out infinite;
+  }
+  
+  /* Texto de carga con animación */
+  .loading-text {
+    margin-top: 5px; /* Espacio entre el logo y el texto */
+    color: #fff; /* Color del texto */
+    font-size: 1.5rem; /* Tamaño del texto */
+    animation: fadeInOut 1.5s infinite; /* Animación de desvanecimiento */
+  }
+  
+  /* Animación de desvanecimiento */
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  

@@ -1,0 +1,264 @@
+import React, { useEffect, useState } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import './Reservation.css';
+
+const Reservation = ({ service, onClose }) => {
+  const [barbers, setBarbers] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedBarber, setSelectedBarber] = useState(null);
+  const [noBarberSelected, setNoBarberSelected] = useState(false);
+  const [occupiedTimes, setOccupiedTimes] = useState([]);
+  const [disabledDates, setDisabledDates] = useState([]);
+
+  useEffect(() => {
+    const fetchBarbers = async () => {
+      const barbersCollection = collection(db, 'Barberos');
+      const barbersSnapshot = await getDocs(barbersCollection);
+      const barbersList = barbersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setBarbers(barbersList);
+    };
+
+    fetchBarbers();
+  }, []);
+
+  useEffect(() => {
+    const fetchOccupiedTimes = async () => {
+      if (selectedBarber && selectedDate) {
+        const reservationsCollection = collection(db, 'Reservaciones');
+        const reservationsQuery = query(
+          reservationsCollection,
+          where('barberId', '==', selectedBarber.id),
+          where('date', '==', selectedDate)
+        );
+        const reservationsSnapshot = await getDocs(reservationsQuery);
+        const times = [];
+        reservationsSnapshot.forEach((doc) => {
+          times.push(doc.data().time);
+        });
+        setOccupiedTimes(times);
+      }
+    };
+
+    fetchOccupiedTimes();
+  }, [selectedBarber, selectedDate]);
+
+  useEffect(() => {
+    const fetchDisabledDates = async () => {
+      const reservationsCollection = collection(db, 'Reservaciones');
+      const reservationsSnapshot = await getDocs(reservationsCollection);
+      const barberDates = {};
+
+      reservationsSnapshot.forEach((doc) => {
+        const { barberId, date } = doc.data();
+        if (!barberDates[barberId]) {
+          barberDates[barberId] = {};
+        }
+
+        if (!barberDates[barberId][date]) {
+          barberDates[barberId][date] = [];
+        }
+        barberDates[barberId][date].push(doc.data().time);
+      });
+
+      // Get dates where all slots are occupied for each barber
+      const disabledDatesSet = new Set();
+      barbers.forEach((barber) => {
+        const barberDatesInfo = barberDates[barber.id];
+        if (barberDatesInfo) {
+          Object.keys(barberDatesInfo).forEach((date) => {
+            if (barberDatesInfo[date].length === 11) { // Assuming there are 11 time slots available in the day
+              disabledDatesSet.add(date);
+            }
+          });
+        }
+      });
+
+      setDisabledDates([...disabledDatesSet]);
+    };
+
+    fetchDisabledDates();
+  }, [barbers]);
+
+  const handleDateChange = (e) => {
+    const selected = e.target.value;
+    const date = new Date(selected);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (date.getDay() === 0 || date < today) {
+      alert('No se puede seleccionar un domingo ni un día pasado. Por favor, elige otra fecha.');
+      setSelectedDate('');
+    } else if (disabledDates.includes(selected)) {
+      alert('La fecha seleccionada está completa para todos los barberos. Por favor, elige otra fecha.');
+      setSelectedDate('');
+    } else {
+      setSelectedDate(selected);
+    }
+  };
+
+  const handleTimeChange = (e) => {
+    setSelectedTime(e.target.value);
+  };
+
+  const handleBarberChange = (barber) => {
+    setSelectedBarber(barber);
+  };
+
+  const handleConfirmClick = async () => {
+    if (!selectedDate || !selectedTime || (!selectedBarber && !noBarberSelected)) {
+      alert('Por favor, seleccione una fecha, un horario y un barbero.');
+      return;
+    }
+
+    // Aquí iría el código para guardar la reserva en la colección 'Reservaciones'
+    if (noBarberSelected) {
+      alert(`Reserva confirmada para el ${selectedDate} a las ${selectedTime} sin barbero asignado.`);
+    } else {
+      alert(`Reserva confirmada para el ${selectedDate} a las ${selectedTime} con ${selectedBarber.name}`);
+    }
+    onClose();
+  };
+
+  
+  
+
+  const timeSlots = [];
+  for (let hour = 10; hour <= 20; hour++) {
+    const start = `${hour}:00`;
+    const end = `${hour + 1}:00`;
+    timeSlots.push(`${start} a ${end}`);
+  }
+
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() + 1);
+  const minDateString = minDate.toISOString().split('T')[0];
+
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div className="reservation-modal" onClick={(e) => e.stopPropagation()}>
+        <h2>Reserva para: {service.serviceName}</h2>
+        <div className="reservation-details">
+          <p>Duración: {service.duration} minutos</p>
+          <p>Precio: ${formatPrice(service.price)}</p>
+        </div>
+        <div className="barber-selection">
+          <label>Selecciona un barbero:</label>
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              id="no-barber-checkbox"
+              checked={noBarberSelected}
+              onChange={() => setNoBarberSelected(!noBarberSelected)}
+            />
+            <label htmlFor="no-barber-checkbox" className="checkbox-label">No tengo barbero</label>
+          </div>
+
+          {!noBarberSelected && (
+            <div className="barber-list">
+              {barbers.map((barber) => (
+                <div
+                  key={barber.id}
+                  className={`barber-card ${selectedBarber === barber ? 'selected' : ''} ${barber.status === 'disable' ? 'disabled' : ''}`}
+                  onClick={() => barber.status === 'enable' && handleBarberChange(barber)}
+                  style={barber.status === 'disable' ? { backgroundColor: '#d3d3d3' } : {}}
+                >
+                  {barber.photoUrl ? (
+                    <img src={barber.photoUrl} alt={barber.name} className="barber-photo" />
+                  ) : (
+                    <div className="no-photo">Sin foto</div>
+                  )}
+                  <p className="barber-name">{barber.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="date-selection">
+          <label htmlFor="date-select">Selecciona una fecha:</label>
+          <input
+            type="date"
+            id="date-select"
+            value={selectedDate}
+            onChange={handleDateChange}
+            min={minDateString}
+            disabled={disabledDates.includes(selectedDate)}
+          />
+        </div>
+
+        <div className="time-selection">
+          <label htmlFor="time-select">Selecciona un horario:</label>
+          <select id="time-select" value={selectedTime} onChange={handleTimeChange}>
+            <option value="">-- Elige un horario --</option>
+            {timeSlots.map((timeSlot, index) => (
+              !occupiedTimes.includes(timeSlot) && (
+                <option key={index} value={timeSlot}>
+                  {timeSlot}
+                </option>
+              )
+            ))}
+          </select>
+        </div>
+
+        <button className="cancel-button" onClick={onClose}>Cancelar</button>
+        <button className="confirm-button" onClick={handleConfirmClick}>Confirmar Reserva</button>
+      </div>
+    </div>
+  );
+};
+
+export default Reservation;
+
+const fetchData = async () => {
+  // Fetch client data
+  const user = auth.currentUser;
+  if (user) {
+    const email = user.email;
+    const clientRef = doc(db, 'Clientes', email);
+    const clientSnap = await getDoc(clientRef);
+
+    if (clientSnap.exists()) {
+      setClientData(clientSnap.data());
+      setClientId(clientSnap.id);
+    } else {
+      console.log('No se encontraron datos del cliente');
+    }
+  } else {
+    console.log('Usuario no autenticado');
+  }
+
+  // Fetch barbers data
+  const barbersCollection = collection(db, 'Barberos');
+  const barbersSnapshot = await getDocs(barbersCollection);
+  const barbersList = barbersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  setBarbers(barbersList);
+
+  // Count active barbers
+  const activeBarbers = barbersList.filter((barber) => barber.status === 'enable').length;
+
+  // Fetch disabled dates
+  const reservationsCollection = collection(db, 'Reservaciones');
+  const reservationsSnapshot = await getDocs(reservationsCollection);
+  const barberDates = {};
+
+  reservationsSnapshot.forEach((doc) => {
+    const { barberId, date } = doc.data();
+    if (!barberDates[date]) {
+      barberDates[date] = 0;
+    }
+    barberDates[date] += 1; // Increment reservation count for the date
+  });
+
+  const disabledDatesSet = new Set();
+  Object.keys(barberDates).forEach((date) => {
+    if (barberDates[date] >= activeBarbers * 11) { // Total possible slots for all active barbers
+      disabledDatesSet.add(date);
+    }
+  });
+
+  setDisabledDates([...disabledDatesSet]);
+  setLoading(false); // Set loading to false once data is fetched
+};
+

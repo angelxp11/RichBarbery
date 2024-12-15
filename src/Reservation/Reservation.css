@@ -1,0 +1,206 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto; /* Permite desplazar si es necesario */
+  }
+  
+  .reservation-modal {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px ;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: auto; /* Permite desplazar el contenido interno si es necesario */
+    max-height: 90vh; /* Limita la altura máxima para que no sobrepase la pantalla */
+  }
+  
+  .reservation-modal h2 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .reservation-details {
+    margin-bottom: 20px;
+  }
+  
+  .reservation-details p {
+    margin: 5px 0;
+  }
+  
+  .date-selection,
+  .time-selection,
+  .barber-selection {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  input[type="date"]:disabled {
+    background-color: #f9f9f9;
+  }
+  
+  .barber-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .barber-card {
+    display: flex;
+    background-color: #ffffff; /* Fondo por defecto */
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.barber-card.disabled {
+    background-color: #000000; /* Fondo cuando el estado es 'disable' */
+    color: #d3d3d3; /* Texto en color gris claro para contraste */
+    pointer-events: none; /* Desactiva la interacción */
+    opacity: 0.6; /* Reduce la opacidad para indicar que está deshabilitado */
+}
+
+.barber-card:hover:not(.disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+  
+  .barber-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .barber-card.selected {
+    border-color:#076c2c56;
+    background-color: #076c2c56;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
+  }
+  
+  .barber-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+  
+  .no-photo {
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 14px;
+    color: #555;
+    border: 1px solid #ddd;
+  }
+  
+  .barber-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .confirm-button,
+  .cancel-button {
+    display: inline-block;
+    width: 48%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .confirm-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .confirm-button:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Estilo para el contenedor del checkbox y el texto */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacio entre el checkbox y el texto */
+  }
+  
+  /* Estilo para el texto */
+  .checkbox-label {
+    margin: 0; /* Asegura que el texto no tenga márgenes adicionales */
+    font-size: 16px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  }
+  
+  .disabled-date {
+    background-color: #d3d3d3;
+    color: #a1a1a1;
+    cursor: not-allowed;
+  }
+  
+  .star-rating {
+    display: inline-block;
+    font-size: 24px; /* Tamaño de las estrellas */
+    color: gold; /* Color para las estrellas completas */
+  }
+  
+  .star-rating .star {
+    pointer-events: none; /* Esto desactiva la interacción con las estrellas */
+  }
+  
+  .star-rating .full {
+    color: gold;
+  }
+  
+  .star-rating .half {
+    color: #FFD700; /* Color para la estrella media */
+  }
+  
+  .star-rating .empty {
+    color: lightgray; /* Color para las estrellas vacías */
+  }
+  

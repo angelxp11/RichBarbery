@@ -1,0 +1,447 @@
+/* Fondo animado en tonos oscuros */
+.background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #292929, #0f0f0f);
+    background-size: 400% 400%; /* Ampliamos el tamaño del gradiente */
+    animation: backgroundAnimation 10s ease infinite; /* Animación del fondo */
+    overflow: hidden;
+  }
+  
+  @keyframes backgroundAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .user-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    flex-wrap: wrap;
+  }
+  
+  .user-content {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .user-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .calendar-icon, .service-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .card-title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  
+  .welcome-title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Estilos para el modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+  
+  .close-btn {
+    background-color: #f44336; /* Color de fondo del botón */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    font-size: 1.2rem;
+  }
+  
+  .close-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .modal-container h2 {
+    margin-top: 0;
+  }
+  
+  /* Estilos para las citas dentro del modal */
+.reservaciones-list {
+  margin-top: 20px;
+  padding: 10px;
+  max-height: 400px; /* Para asegurar que las citas no se extiendan demasiado */
+  overflow-y: auto; /* Permite desplazarse cuando haya muchas citas */
+}
+
+.reservacion-item {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.reservacion-item:hover {
+  background-color: #e3e3e3;
+}
+
+.reservacion-item p {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Estilo específico para cada tipo de información */
+.reservacion-item p strong {
+  color: #333;
+  font-weight: bold;
+}
+
+/* Detalles específicos de cada cita */
+.reservacion-item .date,
+.reservacion-item .time {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+.reservacion-item .service-name,
+.reservacion-item .barber-name,
+.reservacion-item .status {
+  color: #777;
+  font-style: italic;
+}
+
+.reservacion-item .price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #00aaff; /* Resalta el precio */
+}
+
+.reservacion-item .duration {
+  font-size: 14px;
+  color: #888;
+}
+
+/* Estilos para el encabezado del modal */
+.modal-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+/* Modal de Valoración */
+.valoracion-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.valoracion-modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.valoracion-modal-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.valoracion-section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.stars {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.star {
+  font-size: 30px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #ffb400; /* Color dorado cuando está seleccionada */
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 10px;
+  resize: none;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+/* homeUser.css */
+
+.stars {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  font-size: 30px;
+  color: gray;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: gold;
+}
+.stars-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 2rem; /* Tamaño de las estrellas */
+  color: #ccc; /* Color base de las estrellas (gris) */
+}
+
+.star {
+  transition: color 0.3s ease, transform 0.2s ease; /* Transición suave para los cambios de color y escala */
+}
+
+.star.filled {
+  color: #ff9800; /* Color de las estrellas cuando están seleccionadas (amarillo) */
+}
+
+.star:hover {
+  transform: scale(1.2); /* Escalado cuando el cursor pasa por encima */
+  color: #ffb300; /* Color ligeramente diferente al estar encima */
+}
+
+
+/* Estilos para el modal */
+.valoracion-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.valoracion-modal-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.valoracion-modal-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Estilos para las preguntas y valoración */
+.valoracion-section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* Estilos de las estrellas */
+.stars {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.star {
+  font-size: 35px; /* Estrellas un poco más grandes */
+  cursor: pointer;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #ffb400; /* Color dorado cuando está seleccionada */
+}
+
+textarea {
+  width: 90%; /* Centrado del textarea */
+  height: 100px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 10px;
+  resize: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+
+
+/* Distribución de los botones */
+.valoracion-btn-container {
+  display: flex;
+  justify-content: space-between; /* Los botones estarán separados */
+  margin-top: 20px;
+}
+
+.valoracion-btn-container .valoracion-btn {
+  background-color: #008CBA; /* Azul */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+}
+
+.valoracion-btn-container .valoracion-btn:hover {
+  background-color: #005f73;
+}
+
+/* Estilo para la sección de valoración */
+.valoracion-section button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 50%;  /* Ajusta el ancho al 100% del contenedor */
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+
+.valoracion-section button:hover {
+  background-color: #45a049;
+}

@@ -1,0 +1,200 @@
+/* Estilos encapsulados para evitar interferencias */
+.login-container-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #000000, #8c8c8c);
+  background-size: 200% 200%; /* Hace que el fondo sea más grande para permitir el desplazamiento */
+  animation: gradientAnimation 6s linear infinite; /* Aplica la animación */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%; /* Desplazamiento hacia la derecha */
+  }
+  100% {
+    background-position: 0% 50%; /* Vuelve al inicio */
+  }
+}
+
+.login-form-login {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #ffffff; /* Fondo blanco para contraste */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-title-login {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-group-login {
+  margin-bottom: 20px;
+}
+
+.input-label-login {
+  display: block;
+  font-size: 14px;
+  color: #555555;
+  margin-bottom: 5px;
+}
+
+.login-input-login {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login-input-login:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.password-container-login {
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-login {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #007bff;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.password-toggle-login:hover {
+  text-decoration: underline;
+}
+
+.login-button-login {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button-login:hover {
+  background-color: #0056b3;
+}
+
+.register-link-login {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.register-link-login a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link-login a:hover {
+  text-decoration: underline;
+}
+
+.password-container-login {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-password-toggle {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Espacio para el ícono toggle */
+}
+
+.password-toggle-icon-login {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.password-toggle-icon-login:hover {
+  color: #000;
+}
+
+.no-navbar {
+  padding-top: 0;
+}
+
+/* Estilo para el botón de registro como un link */
+.register-link-login button {
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Espaciado interno */
+  text-align: center; /* Centrar texto */
+  text-decoration: none; /* Eliminar subrayado */
+  display: inline-block; /* Mantener el botón en línea */
+  font-size: 16px; /* Tamaño de fuente */
+  cursor: pointer; /* Cursor tipo mano */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+.login-submitbutton {
+  background-color: #4CAF50; /* Color verde para el fondo */
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Espaciado interno */
+  text-align: center; /* Centrar texto */
+  text-decoration: none; /* Eliminar subrayado */
+  display: inline-block; /* Mantener el botón en línea */
+  font-size: 16px; /* Tamaño de fuente */
+  cursor: pointer; /* Cursor tipo mano */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+
+.login-submitbutton:active {
+  background-color: #388e3c; /* Color verde aún más oscuro al hacer clic */
+}
+
+/* Estilo tipo link para el texto de registro */
+.register-link-login {
+  font-size: 16px;
+  color: #0066cc;  /* Color azul típico de un enlace */
+  text-align: center;
+}
+
+.register-link-login button {
+  background: none;
+  border: none;
+  color: #0066cc;  /* Color azul similar al de un enlace */
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.register-link-login button:hover {
+  color: #0044aa;  /* Color más oscuro al pasar el cursor */
+}

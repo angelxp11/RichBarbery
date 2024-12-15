@@ -1,0 +1,155 @@
+/* Container for all services */
+.services-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* Individual service card styling */
+  .service-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 200px; /* Asegura un mínimo alto para la tarjeta */
+  }
+  
+  /* Service name styling */
+  .service-name {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+  }
+  
+  /* Service observations styling */
+  .service-observations {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.4;
+    flex-grow: 1; /* Permite que la sección de observaciones crezca */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Trunca el texto largo */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    margin-bottom: 10px; /* Espacio entre observaciones y duración */
+  }
+  
+  /* Service duration styling */
+  .service-duration {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 1px; /* Espacio entre duración y precio */
+    font-weight: bold;
+  }
+  
+  /* Service price styling */
+  .service-price {
+    font-size: 20px;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espacio entre precio y botón */
+  }
+  
+  /* Reserve button styling */
+  .reserve-button {
+    margin-top: auto; /* Empuja el botón a la parte inferior */
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .reserve-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Loading and no-services message styling */
+  .loading,
+  .no-services {
+    text-align: center;
+    font-size: 18px;
+    margin: 20px 0;
+    color: #fff;
+  }
+  
+  /* Background animation */
+  .background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #292929, #0f0f0f);
+    background-size: 400% 400%;
+    animation: backgroundAnimation 10s ease infinite;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+  
+  @keyframes backgroundAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Welcome title styling */
+  .welcome-title,
+  .welcome-Subtitle {
+    text-align: center;
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .inicio-button {
+    position: fixed; /* Cambiar a fixed para que se quede fijo en la pantalla */
+    bottom: 10px; /* Colocarlo a 10px del fondo de la pantalla */
+    left: 10px; /* Colocarlo a 10px de la izquierda de la pantalla */
+    background-color: #4CAF50; /* Color de fondo verde */
+    color: white; /* Color del texto */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  .inicio-button:hover {
+    background-color: #45a049; /* Color de fondo cuando el cursor pasa sobre el botón */
+  }
+  
+    
+  .logout-button {
+    position: fixed; /* Cambiar a fixed para que se quede fijo en la pantalla */
+    bottom: 10px; /* Colocarlo a 20px del borde superior de la pantalla */
+    right: 10px; /* Colocarlo a 10px de la izquierda de la pantalla */
+    background-color: #ed1b24; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .logout-button:hover {
+    background-color: #c0171e; /* Color más oscuro cuando el cursor pasa sobre el botón */
+  }

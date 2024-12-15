@@ -1,0 +1,107 @@
+/* Fondo animado en tonos oscuros */
+.background-admin {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    background: linear-gradient(135deg, #292929, #0f0f0f);
+    background-size: 400% 400%;
+    animation: backgroundAnimation 10s ease infinite;
+    overflow: hidden;
+  }
+  
+  /* Keyframes para animar el fondo */
+  @keyframes backgroundAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Estilo general para centrar el contenido */
+  .admin-container-admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  
+  .admin-content-admin {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .admin-card-admin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .admin-card-admin:hover {
+    transform: scale(1.05);
+  }
+  
+  .plus-symbol-admin {
+    font-size: 50px;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  
+  .card-title-admin {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Media query para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .admin-content-admin {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .admin-card-admin {
+      width: 200px;
+    }
+  }
+  
+  .welcome-title-admin {
+    text-align: center;
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.2; /* Ajusta el espaciado entre líneas si es necesario */
+    overflow: visible; /* Asegúrate de que no se corte el texto */
+}
+.admin-photo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.admin-photo {
+  border-radius: 50%; /* Opcional: para hacer la imagen circular */
+  width: 150px; /* Ajusta el tamaño según sea necesario */
+  height: 150px; /* Ajusta el tamaño según sea necesario */
+  object-fit: cover; /* Asegura que la imagen se ajuste sin distorsionarse */
+}
+

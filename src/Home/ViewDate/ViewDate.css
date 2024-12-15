@@ -1,0 +1,150 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que el modal esté encima de otros elementos */
+}
+
+.modal-container {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* Fondo degradado claro */
+  border-radius: 15px;
+  padding: 25px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  overflow-y: auto; /* Permite desplazamiento si el contenido es demasiado alto */
+  max-height: 90vh; /* Limita la altura máxima */
+  position: relative; /* Necesario para posicionar elementos internos */
+}
+
+.close-btn {
+  background-color: #dc3545; /* Rojo para resaltar */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  position: absolute; /* Para posicionar en la esquina */
+  top: 15px;
+  right: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: #bd2130; /* Más oscuro al pasar el mouse */
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.controls select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: white;
+  color: #495057;
+  transition: border-color 0.3s ease;
+}
+
+.controls select:focus {
+  border-color: #007bff; /* Resalta el select al enfocarse */
+  outline: none;
+}
+
+.appointments-list {
+  border-top: 1px solid #dee2e6;
+  padding-top: 15px;
+  max-height: 60vh;
+  overflow-y: auto; /* Permite desplazamiento interno si hay muchas citas */
+}
+
+.appointment-item {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.appointment-item:hover {
+  transform: translateY(-3px); /* Eleva la tarjeta al pasar el mouse */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra más prominente */
+}
+
+.appointment-item p {
+  margin: 5px 0;
+  color: #000000;
+  font-size: 14px;
+}
+
+.appointment-item p strong {
+  font-weight: bold;
+  color: #212529;
+}
+.past-appointment {
+  background-color: rgba(249, 1, 1, 0.301); /* Fondo rojo */
+  color: white; /* Cambiar el color del texto a blanco para mayor legibilidad */
+}
+.appointment-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.start-btn, .complete-btn, .cancel-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  height: 40px; /* Establece una altura fija para los botones */
+  flex: 1; /* Hace que ambos botones ocupen el mismo espacio disponible */
+  text-align: center; /* Centra el texto en los botones */
+}
+
+.started-appointment {
+  background-color: rgba(88, 79, 184, 0.325);
+}
+.start-btn {
+  background-color: rgb(88, 79, 184);
+  color: white;
+}
+.complete-btn {
+  background-color: green;
+  color: white;
+}
+.cancel-btn {
+  background-color: red;
+  color: white;
+}
+
+.complete-btn:hover, .cancel-btn:hover {
+  opacity: 0.8;
+}
+.start-btn:hover {
+  opacity: 0.8;
+  background-color: #2200ff;
+
+}

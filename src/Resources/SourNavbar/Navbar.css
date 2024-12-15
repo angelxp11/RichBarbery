@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; /* Fija el navbar en la parte superior */
+  top: 0; /* Alineación superior */
+  left: 0;
+  right: 0;
+  padding: 10px 20px;
+  z-index: 1000; /* Asegura que el navbar esté encima de otros elementos */
+}
+
+.menu-button {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
