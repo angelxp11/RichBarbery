@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/RichBarbery/static/css/main.7fb03e15.css",
+    "main.js": "/RichBarbery/static/js/main.7aa2cffb.js",
+    "static/js/488.21bda911.chunk.js": "/RichBarbery/static/js/488.21bda911.chunk.js",
+    "static/media/logo.png": "/RichBarbery/static/media/logo.c772af6402714b5676b4.png",
+    "index.html": "/RichBarbery/index.html",
+    "main.7fb03e15.css.map": "/RichBarbery/static/css/main.7fb03e15.css.map",
+    "main.7aa2cffb.js.map": "/RichBarbery/static/js/main.7aa2cffb.js.map",
+    "488.21bda911.chunk.js.map": "/RichBarbery/static/js/488.21bda911.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7fb03e15.css",
+    "static/js/main.7aa2cffb.js"
+  ]
+}
