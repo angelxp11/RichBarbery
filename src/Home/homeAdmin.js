@@ -20,7 +20,7 @@ function HomeAdmin() {
   const [adminPhoto, setAdminPhoto] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loadingServices, setLoadingServices] = useState(true);  // Inicialmente en true
+  const [loadingServices, setLoadingServices] = useState(true);
   const [user] = useAuthState(auth);
   const [showServicios, setShowServicios] = useState(false);
 
@@ -40,55 +40,22 @@ function HomeAdmin() {
             const data = adminDocSnap.data();
             setAdminName(data.name || "Usuario");
             setAdminPhoto(data.photo || "");
-            setIsAdmin(adminDocSnap.exists());  // Asegura que el estado se actualiza
-            setLoadingServices(false); // Termina la carga
+            setIsAdmin(true); // Actualiza el estado de administrador
           } else {
             console.log("Documento de administrador no encontrado.");
-            setLoadingServices(false);  // Termina la carga aunque no se encuentre el documento
+            setAdminName(""); // Para garantizar que adminName se establezca
           }
         }
       } catch (error) {
         console.error("Error al obtener los detalles del administrador:", error.message);
         toast.error("Error al cargar los detalles del administrador.");
-        setLoadingServices(false);  // Termina la carga en caso de error
+      } finally {
+        setLoadingServices(false); // Siempre finaliza la carga
       }
     };
 
     fetchAdminDetails();
   }, [user]);
-
-  const handleAddBarberClick = () => setIsAddBarberModalOpen(true);
-  const handleAddServiceClick = () => setIsAddServiceModalOpen(true);
-  const handleViewDateClick = () => setIsViewDateModalOpen(true);
-  const handleCloseBarberModal = () => setIsAddBarberModalOpen(false);
-  const handleCloseServiceModal = () => setIsAddServiceModalOpen(false);
-  const handleCloseViewDateModal = () => setIsViewDateModalOpen(false);
-
-  const handleGoHome = async () => {
-    if (!user) {
-      toast.error("No hay usuario autenticado.");
-      return;
-    }
-
-    setLoadingServices(true);
-
-    try {
-      const email = user.email;
-      const db = getFirestore();
-      const adminDocRef = doc(db, "administradores", email);
-      const adminDocSnap = await getDoc(adminDocRef);
-
-      setIsAdmin(adminDocSnap.exists());
-      setTimeout(() => {
-        setIsLoggedIn(true);
-        setLoadingServices(false);
-      }, 1000);
-    } catch (error) {
-      console.error("Error al verificar administrador:", error.message);
-      toast.error("Error al iniciar sesión.");
-      setLoadingServices(false);
-    }
-  };
 
   const handleSignOut = async () => {
     try {
@@ -98,7 +65,7 @@ function HomeAdmin() {
       setTimeout(() => {
         setShowServicios(true);
         setLoadingServices(false);
-      }, 1000);
+      }, 100);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
       toast.error('Error al cerrar sesión');
@@ -115,9 +82,9 @@ function HomeAdmin() {
   }
 
   const renderAdminCards = () => {
-    if (adminName === "Juan") {
+    if (adminName === "Miguel") {
       return (
-        <div className="admin-card-admin" onClick={handleViewDateClick}>
+        <div className="admin-card-admin" onClick={() => setIsViewDateModalOpen(true)}>
           <div className="plus-symbol-admin">+</div>
           <p className="card-title-admin">Citas</p>
         </div>
@@ -126,15 +93,15 @@ function HomeAdmin() {
 
     return (
       <>
-        <div className="admin-card-admin" onClick={handleAddBarberClick}>
+        <div className="admin-card-admin" onClick={() => setIsAddBarberModalOpen(true)}>
           <div className="plus-symbol-admin">+</div>
           <p className="card-title-admin">Agregar Barbero</p>
         </div>
-        <div className="admin-card-admin" onClick={handleAddServiceClick}>
+        <div className="admin-card-admin" onClick={() => setIsAddServiceModalOpen(true)}>
           <div className="plus-symbol-admin">+</div>
           <p className="card-title-admin">Agregar Servicio</p>
         </div>
-        <div className="admin-card-admin" onClick={handleViewDateClick}>
+        <div className="admin-card-admin" onClick={() => setIsViewDateModalOpen(true)}>
           <div className="plus-symbol-admin">+</div>
           <p className="card-title-admin">Citas</p>
         </div>
@@ -145,14 +112,14 @@ function HomeAdmin() {
   return (
     <div className="background-admin">
       {user && (
-        <button className="inicio-button" onClick={handleGoHome}>
-          ☰ Inicio
-        </button>
-      )}
-      {user && (
-        <button className="logout-button" onClick={handleSignOut}>
-          Cerrar Sesión
-        </button>
+        <>
+          <button className="inicio-button" onClick={() => setIsLoggedIn(true)}>
+            ☰ Inicio
+          </button>
+          <button className="logout-button" onClick={handleSignOut}>
+            Cerrar Sesión
+          </button>
+        </>
       )}
       <h1 className="welcome-title-admin">Bienvenido a RichBarbery {adminName}</h1>
       {adminPhoto && (
@@ -166,12 +133,11 @@ function HomeAdmin() {
         </div>
       </div>
 
-      {isAddBarberModalOpen && <AddBarber isOpen={isAddBarberModalOpen} onClose={handleCloseBarberModal} />}
-      {isAddServiceModalOpen && <AddService isOpen={isAddServiceModalOpen} onClose={handleCloseServiceModal} />}
-      {isViewDateModalOpen && <ViewDate isOpen={isViewDateModalOpen} onClose={handleCloseViewDateModal} />}
+      {isAddBarberModalOpen && <AddBarber isOpen={isAddBarberModalOpen} onClose={() => setIsAddBarberModalOpen(false)} />}
+      {isAddServiceModalOpen && <AddService isOpen={isAddServiceModalOpen} onClose={() => setIsAddServiceModalOpen(false)} />}
+      {isViewDateModalOpen && <ViewDate isOpen={isViewDateModalOpen} onClose={() => setIsViewDateModalOpen(false)} />}
     </div>
   );
 }
 
 export default HomeAdmin;
-

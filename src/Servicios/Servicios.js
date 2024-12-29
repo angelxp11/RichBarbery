@@ -78,13 +78,14 @@ const Servicios = () => {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      toast.success('Usuario desconectado'); // Muestra el toast de éxito
+      toast.success('Usuario desconectado', { autoClose: 1000 }); // Establece el tiempo de cierre automático en 10 segundos
       setShowServicios(true);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      toast.error('Error al cerrar sesión'); // Muestra el toast de error
+      toast.error('Error al cerrar sesión', { autoClose: 1000 }); // Establece el tiempo de cierre automático en 10 segundos
     }
   };
+  
 
   const handleGoHome = async () => {
     const auth = getAuth();
@@ -117,7 +118,7 @@ const Servicios = () => {
       setTimeout(() => {
         setIsLoggedIn(true); // Marca al usuario como logueado
         setLoadingServices(false); // Oculta la pantalla de carga
-      }, 5000); // Mantiene la pantalla de carga durante 5 segundos
+      }, 500); // Mantiene la pantalla de carga durante 5 segundos
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
       toast.error('No se pudo iniciar sesión'); // Muestra un toast de error

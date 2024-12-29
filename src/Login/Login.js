@@ -1,87 +1,107 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { auth } from '../firebase'; // Ajusta la ruta según la ubicación de tu archivo firebase.js
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import './Login.css';
-import HomeAdmin from '../Home/homeAdmin'; // Importa el componente HomeAdmin
-import HomeUser from '../HomeUser/homeUser'; // Importa el componente HomeUser
-import Register from '../Register/Register'; // Importa el componente HomeUser
-import LoadingScreen from '../Resources/LoadingScreen/LoadingScreen.js'; // Importa el componente LoadingScreen
+import HomeAdmin from '../Home/homeAdmin';
+import HomeUser from '../HomeUser/homeUser';
+import Register from '../Register/Register';
+import LoadingScreen from '../Resources/LoadingScreen/LoadingScreen.js';
+import GoogleLogo from '../Resources/google-logo.svg';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Controla si el usuario está logueado
-  const [isRegisterIn, setIsRegisterIn] = useState(false); // Controla si el usuario está en el formulario de registro
-  const [isAdmin, setIsAdmin] = useState(false); // Controla si el usuario es admin
-  const [adminName, setAdminName] = useState(''); // Guarda el nombre del administrador
-  const [loading, setLoading] = useState(false); // Controla la pantalla de carga
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isRegisterIn, setIsRegisterIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminName, setAdminName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const provider = new GoogleAuthProvider(); // Proveedor de Google
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Verifica si el usuario es un administrador
+      const db = getFirestore();
+      const adminDocRef = doc(db, 'administradores', user.email);
+      const adminDocSnap = await getDoc(adminDocRef);
+
+      if (adminDocSnap.exists()) {
+        setIsAdmin(true);
+        const data = adminDocSnap.data();
+        setAdminName(data.name || '');
+      } else {
+        setIsAdmin(false);
+      }
+
+      // Actualiza el estado para redirigir al usuario
+      setIsLoggedIn(true);
+      toast.success('Inicio de sesión con Google exitoso');
+    } catch (error) {
+      console.error('Error al iniciar sesión con Google:', error.message);
+      toast.error('No se pudo iniciar sesión con Google');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Muestra la pantalla de carga
+    setLoading(true);
 
     try {
-      // Establece la persistencia de la sesión a 'local' para mantener la sesión por 15 días
       await setPersistence(auth, browserLocalPersistence);
-
-      // Inicia sesión con email y contraseña
       await signInWithEmailAndPassword(auth, email, password);
 
-      // Obtén la instancia de Firestore
       const db = getFirestore();
-
-      // Verifica si el usuario es un administrador en la colección "administradores"
       const adminDocRef = doc(db, 'administradores', email);
       const adminDocSnap = await getDoc(adminDocRef);
 
       if (adminDocSnap.exists()) {
         setIsAdmin(true);
         const data = adminDocSnap.data();
-        setAdminName(data.name || ''); // Guarda el nombre del administrador
+        setAdminName(data.name || '');
       } else {
         setIsAdmin(false);
       }
 
-      // Una vez obtenidos los datos del usuario, muestra el contenido
-      setTimeout(() => {
-        setIsLoggedIn(true);
-        setLoading(false); // Oculta la pantalla de carga
-      }, 2000); // Mantiene la pantalla de carga durante 2 segundos adicionales después de obtener el nombre
+      setIsLoggedIn(true);
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message);
       toast.error('No se pudo iniciar sesión');
+    } finally {
       setLoading(false);
     }
   };
 
-  // Maneja el clic en "Regístrate"
   const handleRegisterClick = () => {
-    setIsRegisterIn(true); // Cambia el estado para mostrar el componente de registro
+    setIsRegisterIn(true);
   };
 
-  // Renderiza el componente correspondiente si el usuario está logueado y autenticado
   if (isLoggedIn) {
-    // Si el nombre del administrador es "Juan", solo mostrar "Citas"
-    if (isAdmin && adminName === 'Juan') {
+    if (isAdmin && adminName === 'Miguel') {
       return <HomeAdmin />;
     } else {
       return isAdmin ? <HomeAdmin /> : <HomeUser />;
     }
   }
 
-  // Renderiza el formulario de Login o el formulario de registro
   if (isRegisterIn) {
-    return <Register />; // Si está en el formulario de registro, renderiza el componente Register
+    return <Register />;
   }
 
-  // Muestra la pantalla de carga mientras el estado de "loading" es verdadero
   return (
     <div className="login-container-login">
-      {loading && <LoadingScreen />} {/* Muestra la pantalla de carga cuando loading es true */}
+      {loading && <LoadingScreen />}
 
       <form className="login-form-login" onSubmit={handleSubmit}>
         <h2 className="login-title-login">Iniciar sesión</h2>
@@ -121,16 +141,13 @@ const Login = () => {
         </div>
         
         <button type="submit" className="login-button-login">Iniciar sesión</button>
-        
+
         <p className="register-link-login">
-  ¿No tienes una cuenta? <button className="login-submitbutton" onClick={handleRegisterClick}>Regístrate</button>
-</p>
-
-
+          ¿No tienes una cuenta? <button className="login-submitbutton" onClick={handleRegisterClick}>Regístrate</button>
+        </p>
       </form>
 
-      {/* Contenedor de Toast */} 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1000} />
     </div>
   );
 };
