@@ -1,60 +1,262 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
+@import '../../Resources/colors.css';
+
+.addservice-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.addservice-modal-container {
+  background: var(--color-muy-claro);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--color-primario);
+  width: 600px;
+  max-width: 90%;
+  overflow-y: auto; /* Añade el deslizamiento vertical */
+  max-height: 80vh; /* Limita la altura máxima para el deslizamiento */
+}
+
+.addservice-modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.addservice-modal-container::-webkit-scrollbar-track {
+  background: var(--color-muy-claro);
+}
+
+.addservice-modal-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-primario);
+  border-radius: 10px;
+  border: 2px solid var(--color-muy-claro);
+}
+
+.addservice-modal-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-secundario); /* Un color diferente al pasar el mouse */
+}
+
+
+.addservice-button-group {
+  display: flex;
     justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background-color: white;
-    padding: 20px;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.addservice-animated-btn {
+  padding: 10px 20px;
+    background-color: var(--color-primario);
+    border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .form-buttons {
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
     display: flex;
-    justify-content: space-between;
-  }
-  
-  .form-buttons button {
+    align-items: center;
+    gap: 10px;
+}
+
+
+.addservice-animated-btn:hover {
+  background: var(--color-terciario);
+}
+
+.addservice-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.addservice-header {
+  display: flex;
+    justify-content: space-between;  /* Alinea los elementos a los extremos */
+    align-items: center;  /* Centra los elementos verticalmente */
+    margin-bottom: 20px;
+}
+
+.addservice-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center; /* Mantiene el título centrado */
+  flex-grow: 1; /* Hace que el título ocupe el espacio restante */
+}
+
+.addservice-back-btn {
+  padding: 10px;
+  background-color: var(--color-terciario);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.addservice-back-btn:hover {
+  background-color: var(--color-primario);
+  color: var(--color-muy-claro);
+  transform: scale(1.05);
+}
+
+
+.addservice-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addservice-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.addservice-input-group label {
+    font-weight: bold;
+}
+
+.addservice-input-group input {
+    padding: 8px;
+    width: auto;
+    border: 1px solid var(--color-claro);
+    border-radius: 5px;
+    background: var(--blanco);
+    color: var(--color-primario);
+}
+.observations {
+  width: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* Optional: Disable resizing */
+}
+
+.addservice-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between; /* Añade espacio entre los botones */
+}
+
+.addservice-cancel-btn,
+.addservice-submit-btn {
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 14px;
     cursor: pointer;
-  }
-  
-  .form-buttons button[type="submit"] {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .form-buttons button[type="button"] {
-    background-color: #dc3545;
-    color: white;
-  }
-  
+    transition: background-color 0.3s;
+    flex-grow: 1; /* Hace que ambos botones ocupen el mismo espacio */
+    text-align: center; /* Alinea el texto al centro del botón */
+}
+
+
+
+.addservice-cancel-btn {
+    background: var(--color-primario);
+    color: var(--color-muy-claro);
+}
+
+.addservice-cancel-btn:hover {
+    background: var(--color-secundario);
+}
+
+.addservice-submit-btn {
+    background: var(--color-primario);
+    color: var(--color-muy-claro);
+}
+
+.addservice-submit-btn:hover {
+    background: var(--color-secundario);}
+
+.addservice-loader {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.addservice-service-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addservice-service-item {
+    background: var(--blanco);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-primario);
+}
+
+.addservice-action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.addservice-edit-btn,
+.addservice-delete-btn {
+  background-color: var(--color-terciario);
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px; /* Move down a bit */
+}
+
+.addservice-edit-btn:hover {
+    color: var(--color-claro);
+}
+
+.addservice-delete-btn:hover {
+    color: #e74c3c;
+}
+
+.addservice-confirm-modal {
+    background: var(--color-muy-claro);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    color: var(--color-primario);
+    text-align: center;
+}
+
+.addservice-confirm-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.addservice-confirm-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.addservice-confirm-btn:hover {
+    background: var(--color-terciario);
+}

@@ -52,6 +52,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
+    position: relative; /* Add this line to position the ribbon */
   }
   
   .admin-card-admin:hover {
@@ -103,5 +104,97 @@
   width: 150px; /* Ajusta el tamaño según sea necesario */
   height: 150px; /* Ajusta el tamaño según sea necesario */
   object-fit: cover; /* Asegura que la imagen se ajuste sin distorsionarse */
+}
+
+.new-ribbon {
+  background-color: red;
+  color: white;
+  font-size: 12px; /* Slightly larger font size */
+  padding: 3px 7px; /* Adjusted padding for better appearance */
+  position: absolute;
+  top: 20px; /* Adjusted from 25px to 20px */
+  right: -10px; /* Adjusted from 0px to -10px */
+  transform: rotate(45deg);
+  transform-origin: top right;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
+  border-radius: 3px; /* Slightly rounded corners */
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 50px; /* Set initial width to the width of the icons */
+  background-color: #000000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0; /* Adjust padding to fit the new width */
+  transition: width 0.3s, background-color 0.3s; /* Add transition for hover effect */
+}
+
+.sidebar:hover {
+  width: 150px; /* Expand to triple the width on hover */
+  background-color: #000000; /* Change background color on hover */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  position: relative; /* Add position relative to contain the ribbon */
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar ul li:hover {
+  background-color: #181818; /* Change background color on hover */
+  transform: scale(1.1); /* Slightly enlarge icon on hover */
+}
+
+.new-ribbon-icon {
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  transform: rotate(45deg);
+  transform-origin: top right;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the welcome message */
+  background: linear-gradient(135deg, #1a1a1a, #333333); /* Dark gradient background */
+  color: #ffffff; /* Ensure text is readable on dark background */
+}
+
+.welcome-title-admin {
+  text-align: center;
+  font-size: 2rem;
+  margin: 20px 0;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.2; /* Adjust line spacing if necessary */
+  overflow: visible; /* Ensure text is not cut off */
 }
 

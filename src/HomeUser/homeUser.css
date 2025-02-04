@@ -379,7 +379,7 @@ button {
   color: #ffb400; /* Color dorado cuando está seleccionada */
 }
 
-textarea {
+.valoracion-textarea {
   width: 90%; /* Centrado del textarea */
   height: 100px;
   padding: 10px;

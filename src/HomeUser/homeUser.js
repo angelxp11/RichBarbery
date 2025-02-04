@@ -334,6 +334,7 @@
                             ))}
                           </div>
                           <textarea
+                          className="valoracion-textarea"
                             value={comentariosBarbero}
                             onChange={(e) => setComentariosBarbero(e.target.value)}
                             placeholder="Comentarios sobre el barbero"
@@ -355,7 +356,7 @@
                               </span>
                             ))}
                           </div>
-                          <textarea
+                          <textarea className="valoracion-textarea"
                             value={comentariosLugar}
                             onChange={(e) => setComentariosLugar(e.target.value)}
                             placeholder="Comentarios sobre el lugar"

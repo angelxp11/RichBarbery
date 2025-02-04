@@ -11,6 +11,10 @@ import ViewDate from "./ViewDate/ViewDate";
 import LoadingScreen from "../Resources/LoadingScreen/LoadingScreen.js"; 
 import { signOut } from 'firebase/auth';
 import Servicio from "../Servicios/Servicios.js"; 
+import Diary from "./Diary/Diary.js"; // Import Diary component
+import CashBox from "./CashBox/CashBox"; // Import CashBox component
+import Dashboard from "./Dashboard/Dashboard"; // Import Dashboard component
+import { FaUserTie, FaPlus, FaCalendarAlt, FaCashRegister, FaSignOutAlt, FaBookOpen } from 'react-icons/fa'; // Import new icon
 
 function HomeAdmin() {
   const [isAddBarberModalOpen, setIsAddBarberModalOpen] = useState(false);
@@ -23,6 +27,8 @@ function HomeAdmin() {
   const [loadingServices, setLoadingServices] = useState(true);
   const [user] = useAuthState(auth);
   const [showServicios, setShowServicios] = useState(false);
+  const [isDiaryModalOpen, setIsDiaryModalOpen] = useState(false); // New state for Diary modal
+  const [isCashBoxModalOpen, setIsCashBoxModalOpen] = useState(false); // New state for CashBox modal
 
   useEffect(() => {
     const fetchAdminDetails = async () => {
@@ -81,61 +87,41 @@ function HomeAdmin() {
     return <Servicio />;
   }
 
-  const renderAdminCards = () => {
-    if (adminName === "Miguel") {
-      return (
-        <div className="admin-card-admin" onClick={() => setIsViewDateModalOpen(true)}>
-          <div className="plus-symbol-admin">+</div>
-          <p className="card-title-admin">Citas</p>
-        </div>
-      );
-    }
-
-    return (
-      <>
-        <div className="admin-card-admin" onClick={() => setIsAddBarberModalOpen(true)}>
-          <div className="plus-symbol-admin">+</div>
-          <p className="card-title-admin">Agregar Barbero</p>
-        </div>
-        <div className="admin-card-admin" onClick={() => setIsAddServiceModalOpen(true)}>
-          <div className="plus-symbol-admin">+</div>
-          <p className="card-title-admin">Agregar Servicio</p>
-        </div>
-        <div className="admin-card-admin" onClick={() => setIsViewDateModalOpen(true)}>
-          <div className="plus-symbol-admin">+</div>
-          <p className="card-title-admin">Citas</p>
-        </div>
-      </>
-    );
-  };
-
   return (
-    <div className="background-admin">
-      {user && (
-        <>
-          <button className="inicio-button" onClick={() => setIsLoggedIn(true)}>
-            ☰ Inicio
-          </button>
-          <button className="logout-button" onClick={handleSignOut}>
-            Cerrar Sesión
-          </button>
-        </>
-      )}
-      <h1 className="welcome-title-admin">Bienvenido a RichBarbery {adminName}</h1>
-      {adminPhoto && (
-        <div className="admin-photo-container">
-          <img src={adminPhoto} alt="Admin" className="admin-photo" />
-        </div>
-      )}
-      <div className="admin-container-admin">
-        <div className="admin-content-admin">
-          {renderAdminCards()}
-        </div>
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <ul>
+          <li onClick={() => setIsAddBarberModalOpen(true)} title="Ver Barberos">
+            <FaUserTie size={24} />
+          </li>
+          <li onClick={() => setIsAddServiceModalOpen(true)} title="Ver Servicios">
+            <FaPlus size={24} />
+          </li>
+          <li onClick={() => setIsViewDateModalOpen(true)} title="Ver Citas">
+            <FaCalendarAlt size={24} />
+          </li>
+          <li onClick={() => setIsDiaryModalOpen(true)} title="Diario">
+            <FaBookOpen size={24} />
+            <span className="new-ribbon-icon">NEW</span>
+          </li>
+          <li onClick={() => setIsCashBoxModalOpen(true)} title="Caja">
+            <FaCashRegister size={24} />
+            <span className="new-ribbon-icon">NEW</span>
+          </li>
+          <li onClick={handleSignOut} title="Cerrar Sesión">
+            <FaSignOutAlt size={24} />
+          </li>
+        </ul>
+      </div>
+      <div className="main-content">
+        <Dashboard adminName={adminName} adminPhoto={adminPhoto} /> {/* Pass props to Dashboard */}
       </div>
 
       {isAddBarberModalOpen && <AddBarber isOpen={isAddBarberModalOpen} onClose={() => setIsAddBarberModalOpen(false)} />}
       {isAddServiceModalOpen && <AddService isOpen={isAddServiceModalOpen} onClose={() => setIsAddServiceModalOpen(false)} />}
       {isViewDateModalOpen && <ViewDate isOpen={isViewDateModalOpen} onClose={() => setIsViewDateModalOpen(false)} />}
+      {isDiaryModalOpen && <Diary isOpen={isDiaryModalOpen} onClose={() => setIsDiaryModalOpen(false)} />}
+      {isCashBoxModalOpen && <CashBox adminName={adminName} isOpen={isCashBoxModalOpen} onClose={() => setIsCashBoxModalOpen(false)} />}
     </div>
   );
 }

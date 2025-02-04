@@ -1,0 +1,24 @@
+@import '../../Resources/colors.css';
+
+/* Dinero.css */
+.dinero-container {
+  background-color: var(--color-muy-claro); /* Usamos el color más claro de tu paleta */
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: var(--color-primario); /* Color primario para el texto */
+}
+
+.dinero-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--color-secundario); /* Color primario para el título */
+}
+
+.dinero-balance {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--color-primario); /* Usamos el color secundario para el saldo */
+}
