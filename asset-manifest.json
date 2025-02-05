@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/RichBarbery/static/css/main.8937030d.css",
-    "main.js": "/RichBarbery/static/js/main.a59e2c78.js",
+    "main.js": "/RichBarbery/static/js/main.1ca64aa3.js",
     "static/js/488.21bda911.chunk.js": "/RichBarbery/static/js/488.21bda911.chunk.js",
     "static/media/logo.png": "/RichBarbery/static/media/logo.c772af6402714b5676b4.png",
     "static/media/google-logo.svg": "/RichBarbery/static/media/google-logo.efa560d32653a615a1db742bbf78c815.svg",
     "index.html": "/RichBarbery/index.html",
     "main.8937030d.css.map": "/RichBarbery/static/css/main.8937030d.css.map",
-    "main.a59e2c78.js.map": "/RichBarbery/static/js/main.a59e2c78.js.map",
+    "main.1ca64aa3.js.map": "/RichBarbery/static/js/main.1ca64aa3.js.map",
     "488.21bda911.chunk.js.map": "/RichBarbery/static/js/488.21bda911.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8937030d.css",
-    "static/js/main.a59e2c78.js"
+    "static/js/main.1ca64aa3.js"
   ]
 }
