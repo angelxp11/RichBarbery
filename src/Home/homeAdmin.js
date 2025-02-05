@@ -120,7 +120,7 @@ function HomeAdmin() {
       {isAddBarberModalOpen && <AddBarber isOpen={isAddBarberModalOpen} onClose={() => setIsAddBarberModalOpen(false)} />}
       {isAddServiceModalOpen && <AddService isOpen={isAddServiceModalOpen} onClose={() => setIsAddServiceModalOpen(false)} />}
       {isViewDateModalOpen && <ViewDate isOpen={isViewDateModalOpen} onClose={() => setIsViewDateModalOpen(false)} />}
-      {isDiaryModalOpen && <Diary isOpen={isDiaryModalOpen} onClose={() => setIsDiaryModalOpen(false)} />}
+      {isDiaryModalOpen && <Diary adminName={adminName} isOpen={isDiaryModalOpen} onClose={() => setIsDiaryModalOpen(false)} />}
       {isCashBoxModalOpen && <CashBox adminName={adminName} isOpen={isCashBoxModalOpen} onClose={() => setIsCashBoxModalOpen(false)} />}
     </div>
   );

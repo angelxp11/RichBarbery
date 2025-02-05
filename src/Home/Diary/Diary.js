@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { db } from "../../firebase"; // Ensure your firebase.js is configured
 import { collection, getDocs, doc, setDoc, updateDoc, increment, addDoc, getDoc } from "firebase/firestore"; // Import addDoc and getDoc
-import { getAuth } from "firebase/auth"; // Import getAuth
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./diary.css";
 
-function Diary({ isOpen, onClose }) { // Remove authenticatedUser prop
+function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser prop
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -205,16 +204,6 @@ function Diary({ isOpen, onClose }) { // Remove authenticatedUser prop
         });
       }
 
-      // Get the name of the authenticated administrator
-      const auth = getAuth();
-      const user = auth.currentUser;
-      if (!user || !user.email) {
-        throw new Error("Authenticated user is not defined or does not have an email");
-      }
-      const adminRef = doc(db, "Administradores", user.email);
-      const adminDoc = await getDoc(adminRef);
-      const adminName = adminDoc.exists() && adminDoc.data().name ? adminDoc.data().name : user.email;
-
       // Register movement in Movimientos
       const now = new Date();
       const movimientoId = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
@@ -223,7 +212,7 @@ function Diary({ isOpen, onClose }) { // Remove authenticatedUser prop
         time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Hora actual
         value: price + tip, // Set value to the total amount received
         type: "INGRESO",
-        responsible: adminName,
+        responsible: adminName, // Use adminName prop
         paymentMethod: formData.metodoPago.toUpperCase(), // Save payment method in uppercase
         description: formData.servicio // Add service description
       };
