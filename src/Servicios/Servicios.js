@@ -13,6 +13,8 @@ import HomeUser from '../HomeUser/homeUser.js'; // Importa el componente HomeUse
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth"; 
 import { toast } from 'react-toastify'; 
+import { FaSignOutAlt, FaHome } from 'react-icons/fa'; // Import icons for sidebar
+import rbsquare from '../Resources/RBSQUARE.png'; // Import the image
 
 const Servicios = () => {
   const [services, setServices] = useState([]);
@@ -133,7 +135,7 @@ const Servicios = () => {
     return isAdmin ? <HomeAdmin /> : <HomeUser />;
   }
   return (
-    <div className="background">
+    <div className={`background ${isLoggedIn ? 'no-background' : ''}`}>
       {loadingServices ? (
         <LoadingScreen /> // Muestra la pantalla de carga mientras se cargan los servicios
       ) : (
@@ -144,22 +146,21 @@ const Servicios = () => {
             <>
               {showServicios ? (
                 <>
+                  {user && (
+                    <div className="sidebar">
+                      <img src={rbsquare} alt="RB Square" className="sidebar-image" />
+                      <ul>
+                        <li onClick={handleGoHome} title="Inicio">
+                          <FaHome size={24} />
+                        </li>
+                        <li onClick={handleSignOut} title="Cerrar Sesión">
+                          <FaSignOutAlt size={24} />
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                   <h1 className="welcome-title">Bienvenido a RichBarbery</h1>
                   <h1 className="welcome-Subtitle">Servicios</h1>
-  
-                  {/* Mostrar botón de inicio solo si el usuario está autenticado */}
-                  {user && (
-                    <button className="inicio-button" onClick={handleGoHome}>
-                      ☰ Inicio
-                    </button>
-                  )}
-  
-                  {/* Mostrar el botón de cerrar sesión solo si el usuario está autenticado */}
-                  {user && (
-                    <button className="logout-button" onClick={handleSignOut}>
-                      Cerrar Sesión
-                    </button>
-                  )}
   
                   <div className="services-container">
                     {services.length === 0 ? (

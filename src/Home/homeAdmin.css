@@ -32,6 +32,8 @@
     padding: 10px;
     box-sizing: border-box;
     overflow-y: auto;
+    scrollbar-color: var(--color-primario) var(--color-secundario);
+    scrollbar-width: thin;
   }
   
   .admin-content-admin {
@@ -126,7 +128,7 @@
 }
 
 .sidebar {
-  width: 50px; /* Set initial width to the width of the icons */
+  width: 100px; /* Set initial width to the width of the icons */
   background-color: #000000;
   color: white;
   display: flex;
@@ -134,10 +136,11 @@
   align-items: center;
   padding: 20px 0; /* Adjust padding to fit the new width */
   transition: width 0.3s, background-color 0.3s; /* Add transition for hover effect */
+  z-index: 2000;
 }
 
 .sidebar:hover {
-  width: 150px; /* Expand to triple the width on hover */
+  width: 200px; /* Reduce width on hover */
   background-color: #000000; /* Change background color on hover */
 }
 
@@ -149,7 +152,7 @@
 
 .sidebar ul li {
   position: relative; /* Add position relative to contain the ribbon */
-  padding: 15px;
+  padding: 15px; /* Increase padding for larger icons */
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s; /* Add transition for hover effect */
@@ -160,7 +163,36 @@
 
 .sidebar ul li:hover {
   background-color: #181818; /* Change background color on hover */
-  transform: scale(1.1); /* Slightly enlarge icon on hover */
+  transform: scale(1.2); /* Slightly enlarge icon on hover */
+}
+
+.sidebar ul li:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%; /* Position to the right of the icon */
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #000000;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar ul li img:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%; /* Position to the right of the icon */
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #000000;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1; /* Ensure the tooltip is above other elements */
 }
 
 .new-ribbon-icon {
@@ -175,6 +207,12 @@
   transform-origin: top right;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+}
+
+.sidebar-image {
+  width: 80px; /* Increase the size */
+  height: 80px; /* Increase the size */
+  margin-bottom: 20px; /* Add some space below the image */
 }
 
 .main-content {
@@ -196,5 +234,24 @@
   font-family: 'Arial', sans-serif;
   line-height: 1.2; /* Adjust line spacing if necessary */
   overflow: visible; /* Ensure text is not cut off */
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-claro);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primario);
+    border-radius: 10px;
+    border: 3px solid var(--color-claro);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-secundario);
 }
 

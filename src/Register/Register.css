@@ -4,9 +4,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #000000, #8c8c8c);
     background-size: 200% 200%;
     animation: gradientAnimation 6s linear infinite; /* Aplica la animación */
+    max-width: 600px;
+    min-width: 400px;
+    margin: auto
   }
   
   @keyframes gradientAnimation {
@@ -25,7 +27,7 @@
     width: 100%;
     max-width: 400px;
     padding: 20px;
-    background-color: #ffffff; /* Fondo blanco para contraste */
+    background-color: var(--blanco); /* Fondo blanco para contraste */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -33,7 +35,7 @@
   .register-title {
     font-size: 24px;
     font-weight: bold;
-    color: #333333;
+    color: var(--color-primario); /* Color primario */
     text-align: center;
     margin-bottom: 20px;
   }
@@ -45,7 +47,7 @@
   .register-label {
     display: block;
     font-size: 14px;
-    color: #555555;
+    color: var(--color-secundario); /* Color secundario */
     margin-bottom: 5px;
   }
   
@@ -53,13 +55,13 @@
     width: 100%;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #cccccc;
+    border: 1px solid var(--color-terciario); /* Color terciario */
     border-radius: 4px;
     box-sizing: border-box;
   }
   
   .register-input:focus {
-    border-color: #007bff;
+    border-color: var(--color-primario); /* Color primario */
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
@@ -73,7 +75,7 @@
   .register-toggle-password {
     margin-left: 10px;
     font-size: 12px;
-    color: #007bff;
+    color: var(--color-primario); /* Color primario */
     background: none;
     border: none;
     cursor: pointer;
@@ -81,6 +83,7 @@
   
   .register-toggle-password:hover {
     text-decoration: underline;
+    color: var(--color-secundario); /* Color secundario */
   }
   
   .register-submit-button {
@@ -88,7 +91,7 @@
     padding: 10px;
     font-size: 16px;
     color: #ffffff;
-    background-color: #007bff;
+    background-color: var(--color-primario); /* Color primario */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -96,7 +99,7 @@
   }
   
   .register-submit-button:hover {
-    background-color: #0056b3;
+    background-color: var(--color-secundario); /* Color secundario */
   }
   
   .register-login-link {
@@ -106,13 +109,14 @@
   }
   
   .register-login-link a {
-    color: #007bff;
+    color: var(--color-primario); /* Color primario */
   text-decoration: none;
 
   }
   
   .register-login-link a:hover {
     text-decoration: underline;
+    color: var(--color-secundario); /* Color secundario */
   }
   
   .register-password-container {
@@ -123,7 +127,7 @@
   .register-toggle-password {
     margin-left: 10px;
     font-size: 12px;
-    color: #007bff;
+    color: var(--color-primario); /* Color primario */
     background: none;
     border: none;
     cursor: pointer;
@@ -131,20 +135,33 @@
   
   .register-toggle-password:hover {
     text-decoration: underline;
+    color: var(--color-secundario); /* Color secundario */
   }
   
   .no-navbar {
     padding-top: 0;
   }
   .register-login-link-text {
-    color: #007bff;
+    color: var(--color-primario); /* Color primario */
     text-decoration: none;
     cursor: pointer;
   }
   
   .register-login-link-text:hover {
     text-decoration: underline;
+    color: var(--color-secundario); /* Color secundario */
   }
-  
 
-  
+.password-container-login {
+  position: relative;
+}
+
+.password-toggle-icon-login {
+  position: absolute;
+  right: 10px;
+  top: 55%; /* Adjusted position */
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+

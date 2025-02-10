@@ -51,6 +51,7 @@
 .cashBox-content form button,
 .cashBox-content button {
   width: 100%;
+  margin-top: 20px;
   padding: 12px;
   background: var(--color-primario);
   color: white;

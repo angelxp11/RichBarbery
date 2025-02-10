@@ -2,23 +2,119 @@
 
 /* Dinero.css */
 .dinero-container {
-  background-color: var(--color-muy-claro); /* Usamos el color más claro de tu paleta */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-secundario);
   padding: 20px;
   border-radius: 8px;
   margin: 20px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  color: var(--color-primario); /* Color primario para el texto */
+  color: var(---blanco);
 }
 
-.dinero-container h2 {
+.header-row {
+  display: flex;
+  justify-content: space-between; /* Change to space-between */
+  align-items: center; /* Align items vertically */
+}
+
+.header-title {
   font-size: 24px;
-  margin-bottom: 10px;
-  color: var(--color-secundario); /* Color primario para el título */
+  font-weight: bold;
+  color: var(--color-primario);
+}
+
+.header-row select {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--color-primario);
+  background-color: var(--blanco);
+  color: var(--color-primario);
+  width: 200px; /* Set the width of the select element */
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--blanco); /* Border for the table container */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.content-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-section, .center-section, .right-section {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid var(--blanco); /* Border between cells */
+  padding: 10px;
+}
+
+.left-section:last-child, .center-section:last-child, .right-section:last-child {
+  border-right: none; /* Remove border for the last cell */
+}
+
+.right-section h2, .right-section select {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h2 {
+  margin: 0; /* Remove margin from h2 elements */
 }
 
 .dinero-balance {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: bold;
-  color: var(--color-primario); /* Usamos el color secundario para el saldo */
+  color: var(--blanco);
+}
+
+select {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--color-primario);
+  background-color: var(--blanco);
+  color: var(--color-primario);
+  vertical-align: middle; /* Align the select element with the headers */
+}
+
+.payment-method-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the start */
+  margin-top: 10px;
+}
+
+.payment-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.barber-earnings-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.barber-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.select-barber-dropdown {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--color-primario);
+  background-color: var(--blanco);
+  color: var(--color-primario);
+  width: 200px; /* Set the width of the select element */
 }

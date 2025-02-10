@@ -158,3 +158,46 @@
 .movements-list::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-claro);
 }
+
+.movements-list h3 {
+  font-size: 1.2em; /* Set a consistent font size */
+  margin: 10px 0; /* Add some margin for spacing */
+  text-align: left; /* Ensure consistent alignment */
+  width: 100%; /* Ensure consistent width */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative; /* Add relative positioning */
+}
+
+.pagination button {
+  background-color: var(--color-primario);
+  color: var(--color-muy-claro);
+  border: none;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:first-child {
+  position: absolute;
+  left: 0; /* Fix the left arrow button position */
+}
+
+.pagination button:last-child {
+  position: absolute;
+  right: 0; /* Fix the right arrow button position */
+}
+
+.pagination button.active {
+  background-color: var(--color-claro);
+}
+
+.pagination button:disabled {
+  background-color: var(--color-secundario);
+  cursor: not-allowed;
+}

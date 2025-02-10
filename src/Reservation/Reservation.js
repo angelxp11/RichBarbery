@@ -156,7 +156,19 @@ const Reservation = ({ service, onClose }) => {
   
     // Allow selecting today and future dates
     if (date.getDay() === 6) {
-      alert('No se puede seleccionar un domingo. Por favor, elige otra fecha.');
+      toast.error('No se puede seleccionar un domingo. Por favor, elige otra fecha.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+          backgroundColor: 'var(--color-secundario)',
+          color: 'var(--blanco)',
+        },
+      });
       setSelectedDate(''); // Clear selection if it's a Sunday
     } else if (disabledDates.includes(selected)) {
       alert('La fecha seleccionada está completa para todos los barberos. Por favor, elige otra fecha.');
@@ -321,7 +333,7 @@ const Reservation = ({ service, onClose }) => {
   
         <div className="time-selection">
           <label htmlFor="time-select">Selecciona un horario:</label>
-          <select id="time-select" value={selectedTime} onChange={handleTimeChange}>
+          <select id="time-select" className="select-horario" value={selectedTime} onChange={handleTimeChange}>
             <option value="">Selecciona un horario</option>
             {getTimeSlots().map((time, index) => (
               <option key={index} value={time} disabled={occupiedTimes.includes(time)}>

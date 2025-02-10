@@ -12,7 +12,7 @@
   }
   
   .reservation-modal {
-    background-color: #fff;
+    background-color: var(--color-muy-claro);
     border-radius: 8px;
     padding: 20px;
     width: 400px ;
@@ -21,11 +21,12 @@
     position: relative;
     overflow: auto; /* Permite desplazar el contenido interno si es necesario */
     max-height: 90vh; /* Limita la altura máxima para que no sobrepase la pantalla */
+    border: 2px solid var(--color-muy-claro);
   }
   
   .reservation-modal h2 {
     margin-top: 0;
-    color: #333;
+    color: var(--color-primario);
   }
   
   .reservation-details {
@@ -34,6 +35,7 @@
   
   .reservation-details p {
     margin: 5px 0;
+    color: var(--color-primario);
   }
   
   .date-selection,
@@ -46,23 +48,27 @@
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: var(--color-primario);
   }
   
   input[type="date"],
   select {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 2px solid var(--color-muy-claro);
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
+    background-color: var(--blanco);
+    color: var(--color-primario);
   }
   
   input[type="date"]:disabled {
-    background-color: #f9f9f9;
+    background-color: var(--color-muy-claro);
   }
   
   .barber-list {
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -70,10 +76,10 @@
   
   .barber-card {
     display: flex;
-    background-color: #ffffff; /* Fondo por defecto */
+    background-color: var(--blanco); /* Fondo por defecto */
     flex-direction: column;
     align-items: center;
-    border: 1px solid #ddd;
+    border: 2px solid var(--color-muy-claro);
     border-radius: 8px;
     padding: 10px;
     cursor: pointer;
@@ -82,8 +88,8 @@
 }
 
 .barber-card.disabled {
-    background-color: #000000; /* Fondo cuando el estado es 'disable' */
-    color: #d3d3d3; /* Texto en color gris claro para contraste */
+    background-color: var(--color-primario); /* Fondo cuando el estado es 'disable' */
+    color: var(--color-muy-claro); /* Texto en color gris claro para contraste */
     pointer-events: none; /* Desactiva la interacción */
     opacity: 0.6; /* Reduce la opacidad para indicar que está deshabilitado */
 }
@@ -100,9 +106,10 @@
   }
   
   .barber-card.selected {
-    border-color:#076c2c56;
-    background-color: #076c2c56;
+    border-color: var(--color-pagado);
+    background-color: var(--color-pagado);
     box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
+    border: 2px solid var(--color-muy-claro);
   }
   
   .barber-photo {
@@ -116,20 +123,20 @@
   .no-photo {
     width: 100px;
     height: 100px;
-    background-color: #f0f0f0;
+    background-color: var(--color-muy-claro);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     font-size: 14px;
-    color: #555;
-    border: 1px solid #ddd;
+    color: var(--color-secundario);
+    border: 2px solid var(--color-muy-claro);
   }
   
   .barber-name {
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: var(--color-primario);
   }
   
   .confirm-button,
@@ -143,24 +150,27 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+    background-color: var(--color-primario);
+    color: var(--blanco);
   }
   
   .confirm-button {
-    background-color: #28a745;
-    color: #fff;
+    background-color: var(--color-primario);
+    color: var(--blanco);
   }
   
   .confirm-button:hover {
-    background-color: #218838;
+    background-color: var(--color-terciario);
   }
   
   .cancel-button {
-    background-color: #dc3545;
-    color: #fff;
+    background-color: var(--color-secundario);
+    color: var(--blanco);
+    margin-right: 10px; /* Add this line */
   }
   
   .cancel-button:hover {
-    background-color: #c82333;
+    background-color: var(--color-terciario);
   }
   
   /* Estilo para el contenedor del checkbox y el texto */
@@ -174,18 +184,46 @@
   .checkbox-label {
     margin: 0; /* Asegura que el texto no tenga márgenes adicionales */
     font-size: 16px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    color: var(--color-primario);
   }
+
+  .checkbox-container input[type="checkbox"] {
+    margin-bottom: 0; /* Ensure no bottom margin */
+    transform: scale(1.2);
+    accent-color: var(--color-primario); /* Apply color palette */
+    cursor: pointer;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-primario); /* Apply color palette */
+    border-radius: 4px;
+    position: relative;
+    margin-right: 10px; /* Add margin to the right of the checkbox */
+}
+
+.checkbox-container input[type="checkbox"]:hover {
+    border-color: var(--color-secundario); /* Change border color on hover */
+}
+
+.checkbox-container input[type="checkbox"]:checked::before {
+    content: '✔'; /* Show checkmark when selected */
+    position: absolute;
+    top: 0;
+    left: 3px;
+    font-size: 16px;
+    color: var(--color-primario); /* Apply color palette */
+}
   
   .disabled-date {
-    background-color: #d3d3d3;
-    color: #a1a1a1;
+    background-color: var(--color-muy-claro);
+    color: var(--color-secundario);
     cursor: not-allowed;
   }
   
   .star-rating {
     display: inline-block;
     font-size: 24px; /* Tamaño de las estrellas */
-    color: gold; /* Color para las estrellas completas */
+    color: var(--color-pagado); /* Color para las estrellas completas */
   }
   
   .star-rating .star {
@@ -203,4 +241,22 @@
   .star-rating .empty {
     color: lightgray; /* Color para las estrellas vacías */
   }
+  .select-horario {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid var(--color-muy-claro);
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: var(--blanco);
+    color: var(--color-primario);
+  }
   
+  .select-horario:focus {
+    border-color: #000000;
+    outline: none;
+  }
+  
+  .select-horario option:disabled {
+    color: #ccc;
+  }

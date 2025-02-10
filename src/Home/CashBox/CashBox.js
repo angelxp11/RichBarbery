@@ -11,7 +11,8 @@ function CashBox({ adminName,isOpen, onClose }) {
   const [formData, setFormData] = useState({
     type: "Ingreso",
     amount: "",
-    description: ""
+    description: "",
+    paymentMethod: "" // Add paymentMethod to formData
   });
   const [loading, setLoading] = useState(false); // Add loading state
 
@@ -40,10 +41,12 @@ function CashBox({ adminName,isOpen, onClose }) {
       const saldoDoc = await getDoc(saldoRef);
   
       if (!saldoDoc.exists()) {
-        await setDoc(saldoRef, { amount: 0 });
+        await setDoc(saldoRef, {});
       }
   
-      const currentAmount = saldoDoc.data().amount;
+      const today = new Date();
+      const dateKey = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+      const currentAmount = saldoDoc.data()[dateKey]?.amount || 0;
   
       if (formData.type === "Egreso" && currentAmount < amount) {
         toast.error("No hay suficiente saldo para realizar el egreso.");
@@ -53,7 +56,7 @@ function CashBox({ adminName,isOpen, onClose }) {
   
       // Actualizar el saldo según el tipo de movimiento
       await updateDoc(saldoRef, {
-        amount: increment(formData.type === "Ingreso" ? amount : -amount)
+        [`${dateKey}.amount`]: increment(formData.type === "Ingreso" ? amount : -amount)
       });
   
       // Usar adminName directamente como responsable
@@ -68,12 +71,43 @@ function CashBox({ adminName,isOpen, onClose }) {
         value: amount,
         type: formData.type.toUpperCase(),
         description: formData.description,
-        responsible: responsible // Usar directamente el adminName como responsable
+        responsible: responsible, // Usar directamente el adminName como responsable
+        paymentMethod: formData.paymentMethod.toUpperCase() // Save payment method in uppercase
       };
   
       await setDoc(doc(db, "Caja", "Movimientos"), { [movimientoId]: movimientoData }, { merge: true });
   
-      setFormData({ type: "Ingreso", amount: "", description: "" });
+      // Actualizar el documento del método de pago
+      const paymentMethodRef = doc(db, "MetodosDePago", formData.paymentMethod.toUpperCase());
+      const paymentMethodDoc = await getDoc(paymentMethodRef);
+  
+      if (!paymentMethodDoc.exists()) {
+        await setDoc(paymentMethodRef, {
+          [dateKey]: { amount: formData.type === "Ingreso" ? amount : -amount }
+        });
+      } else {
+        await updateDoc(paymentMethodRef, {
+          [`${dateKey}.amount`]: increment(formData.type === "Ingreso" ? amount : -amount)
+        });
+      }
+  
+      // Actualizar el documento del mes y año
+      const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+      const currentMonthYear = `${monthNames[now.getMonth()]}${now.getFullYear()}`;
+      const monthYearRef = doc(db, "Caja", currentMonthYear);
+      const monthYearDoc = await getDoc(monthYearRef);
+  
+      if (!monthYearDoc.exists()) {
+        await setDoc(monthYearRef, {
+          [dateKey]: { serviceValue: formData.type === "Ingreso" ? amount : -amount } // Change amount to serviceValue
+        });
+      } else {
+        await updateDoc(monthYearRef, {
+          [`${dateKey}.serviceValue`]: increment(formData.type === "Ingreso" ? amount : -amount) // Change amount to serviceValue
+        });
+      }
+  
+      setFormData({ type: "Ingreso", amount: "", description: "", paymentMethod: "" });
       toast.success(`Movimiento registrado: ${formatPrice(formData.amount)}`, {
         autoClose: 2000,
         onClose: onClose
@@ -84,7 +118,6 @@ function CashBox({ adminName,isOpen, onClose }) {
       setLoading(false);
     }
   };
-  
 
   if (!isOpen) return null;
 
@@ -113,6 +146,16 @@ function CashBox({ adminName,isOpen, onClose }) {
           <label>
             Descripción:
             <input type="text" name="description" value={formData.description} onChange={handleChange} required />
+          </label>
+          <label>
+            Método de Pago:
+            <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} required>
+              <option value="">Seleccione un método de pago</option>
+              <option value="NEQUI">Nequi</option>
+              <option value="DAVIPLATA">Daviplata</option>
+              <option value="TARJETA">Tarjeta</option>
+              <option value="EFECTIVO">Efectivo</option>
+            </select>
           </label>
           <button type="submit" disabled={loading}>
             {loading ? "Procesando..." : <><FaCheck /> Añadir</>}

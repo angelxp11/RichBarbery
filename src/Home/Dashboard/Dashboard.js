@@ -4,10 +4,14 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import './Dashboard.css';
 import arrowImage from '../../Resources/flecha.png';
 import Dinero from '../Dinero/Dinero.js'; // Import the Dinero component
+import LoadingScreen from '../../Resources/LoadingScreen/LoadingScreen'; // Import LoadingScreen component
 
 function Dashboard({ adminName, adminPhoto }) {
   const [movements, setMovements] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const movementsPerPage = 10; // Change to 10 movements per page
 
   useEffect(() => {
     const docRef = doc(db, 'Caja', 'Movimientos');
@@ -18,8 +22,9 @@ function Dashboard({ adminName, adminPhoto }) {
           ...movementsData[key],
           id: key
         }));
-        movementsList.sort((a, b) => b.id.localeCompare(a.id)); // Sort by custom date format
+        movementsList.sort((a, b) => b.id.localeCompare(a.id)); // Sort by custom date format in descending order
         setMovements(movementsList);
+        setLoading(false); // Set loading to false after data is fetched
       }
     });
 
@@ -52,16 +57,45 @@ function Dashboard({ adminName, adminPhoto }) {
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
+    const monthNames = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
     if (date.toDateString() === today.toDateString()) {
       return "Hoy";
     } else if (date.toDateString() === yesterday.toDateString()) {
       return "Ayer";
     } else {
-      return `${day}/${month}/${year}`;
+      return `${parseInt(day)} de ${monthNames[parseInt(month) - 1]} de ${year}`;
     }
   };
 
-  const groupedMovements = groupMovementsByDate(filteredMovements);
+  const totalPages = Math.ceil(filteredMovements.length / movementsPerPage);
+  const currentMovements = filteredMovements.slice((currentPage - 1) * movementsPerPage, currentPage * movementsPerPage);
+  const groupedMovements = groupMovementsByDate(currentMovements); // Group only the current page movements
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pageNumbers.push(1, 2, 3, 4, '...', totalPages);
+      } else if (currentPage > totalPages - 3) {
+        pageNumbers.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pageNumbers.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+      }
+    }
+    return pageNumbers;
+  };
+
+  if (loading) {
+    return <LoadingScreen />; // Render LoadingScreen while loading
+  }
 
   return (
     <div className="dashboard-main-content">
@@ -91,7 +125,7 @@ function Dashboard({ adminName, adminPhoto }) {
             <div key={date}>
               <h3>{formatDate(date)}</h3>
               <ul>
-              {groupedMovements[date].map((movement, index) => (
+                {groupedMovements[date].map((movement, index) => (
                   <li key={index} className={movement.type === 'INGRESO' ? 'ingreso' : movement.type === 'EGRESO' ? 'egreso' : ''}>
                     <div className="movement-info">
                       {movement.type === 'INGRESO' && <img src={arrowImage} alt="Arrow Up" className="arrow-up" />}
@@ -104,6 +138,24 @@ function Dashboard({ adminName, adminPhoto }) {
               </ul>
             </div>
           ))}
+        </div>
+        <div className="pagination">
+          <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+            &lt;
+          </button>
+          {renderPageNumbers().map((page, index) => (
+            <button
+              key={index}
+              onClick={() => typeof page === 'number' && setCurrentPage(page)}
+              className={currentPage === page ? 'active' : ''}
+              disabled={typeof page !== 'number'}
+            >
+              {page}
+            </button>
+          ))}
+          <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+            &gt;
+          </button>
         </div>
       </div>
     </div>

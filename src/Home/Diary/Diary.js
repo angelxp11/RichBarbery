@@ -5,6 +5,7 @@ import { collection, getDocs, doc, setDoc, updateDoc, increment, addDoc, getDoc 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./diary.css";
+import LoadingScreen from "../../Resources/LoadingScreen/LoadingScreen"; // Import LoadingScreen
 
 function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser prop
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser pro
   const [services, setServices] = useState([]);
   const [barbers, setBarbers] = useState([]); // Add state for barbers
   const [loading, setLoading] = useState(false); // Add loading state
+  
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -120,144 +122,156 @@ function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser pro
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); // Set loading to true on submit
+
     try {
-      const docRef = doc(db, "Clientes", formData.correo);
-      await setDoc(docRef, {
-        name: formData.nombre,
-        surname: formData.apellido,
-        phone: formData.telefono
-      });
+        const now = new Date();
+        const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`; // YYYY-MM-DD format
+        const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const currentDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`; // YYYYMMDD format
 
-      const price = parseFloat(formData.precio.replace(/\./g, "").replace(/[^0-9.-]+/g, ""));
-      const tip = formData.propina ? parseFloat(formData.valorPropina.replace(/\./g, "").replace(/[^0-9.-]+/g, "")) : 0; // Get the tip value
-
-      // Ensure Ganancias document exists
-      const gananciasRef = doc(db, "Caja", "Ganancias");
-      const gananciasDoc = await getDoc(gananciasRef);
-      if (!gananciasDoc.exists()) {
-        await setDoc(gananciasRef, { amount: 0 });
-      }
-      await updateDoc(gananciasRef, {
-        amount: increment(price * 0.6) // Añadir el 60% del precio a Ganancias
-      });
-
-      // Ensure Saldo document exists
-      const saldoRef = doc(db, "Caja", "Saldo");
-      const saldoDoc = await getDoc(saldoRef);
-      if (!saldoDoc.exists()) {
-        await setDoc(saldoRef, { amount: 0 });
-      }
-      await updateDoc(saldoRef, {
-        amount: increment(price + tip) // Añadir el precio completo y la propina a Saldo
-      });
-
-      // Crear una reservación con estado "Completada"
-      const reservationData = {
-        date: new Date().toISOString().split('T')[0], // Fecha actual
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Hora actual
-        barberId: barbers.find(barber => barber.name === formData.barbero).id,
-        barberName: formData.barbero,
-        serviceName: formData.servicio,
-        duration: 60, // Duración predeterminada
-        price: price,
-        clientName: `${formData.nombre} ${formData.apellido}`,
-        clientPhone: formData.telefono,
-        clientId: formData.correo,
-        status: "Completada",
-        paymentMethod: formData.metodoPago.toUpperCase() // Save payment method in uppercase
-      };
-
-      await addDoc(collection(db, 'Reservaciones'), reservationData);
-
-      // Actualizar o crear documento en Caja para el barbero
-      const barberId = reservationData.barberId;
-      const currentDate = new Date().toISOString().split('T')[0].replace(/-/g, '');
-      const barberCajaRef = doc(db, "Caja", barberId);
-      const barberCajaDoc = await getDoc(barberCajaRef);
-
-      if (!barberCajaDoc.exists()) {
-        await setDoc(barberCajaRef, {
-          [currentDate]: { amount: price * 0.4, tip: tip } // Añadir el 40% del precio y la propina al documento del barbero
+        const docRef = doc(db, "Clientes", formData.correo);
+        await setDoc(docRef, {
+            name: formData.nombre,
+            surname: formData.apellido,
+            phone: formData.telefono
         });
-      } else {
+
+        const price = parseFloat(formData.precio.replace(/\./g, "").replace(/[^0-9.-]+/g, ""));
+        const tip = formData.propina ? parseFloat(formData.valorPropina.replace(/\./g, "").replace(/[^0-9.-]+/g, "")) : 0;
+
+        const gananciasRef = doc(db, "Caja", "Ganancias");
+        await updateDoc(gananciasRef, {
+            [`${currentDate}.amount`]: increment(price * 0.4)
+        });
+
+        const saldoRef = doc(db, "Caja", "Saldo");
+        await updateDoc(saldoRef, {
+            [`${currentDate}.amount`]: increment(price + tip)
+        });
+
+        const reservationData = {
+            date: formattedDate,
+            time: formattedTime,
+            barberId: barbers.find(barber => barber.name === formData.barbero).id,
+            barberName: formData.barbero,
+            serviceName: formData.servicio,
+            duration: 60,
+            price: price,
+            clientName: `${formData.nombre} ${formData.apellido}`,
+            clientPhone: formData.telefono,
+            clientId: formData.correo,
+            status: "Completada",
+            paymentMethod: formData.metodoPago.toUpperCase()
+        };
+
+        await addDoc(collection(db, 'Reservaciones'), reservationData);
+
+        const barberId = reservationData.barberId;
+        const barberCajaRef = doc(db, "Caja", barberId);
         await updateDoc(barberCajaRef, {
-          [`${currentDate}.amount`]: increment(price * 0.4), // Añadir el 40% del precio al documento del barbero
-          [`${currentDate}.tip`]: increment(tip) // Añadir la propina al documento del barbero
+            [`${currentDate}.amount`]: increment(price * 0.6),
+            [`${currentDate}.tip`]: increment(tip),
+            [`${currentDate}.tippaid`]: false,
+            [`${currentDate}.amountpaid`]: false,
+            [`${currentDate}.paymentMethod`]: formData.metodoPago.toUpperCase()
         });
-      }
 
-      // Actualizar contador de servicios y valor del servicio en FEBRERO2025
-      const febrero2025Ref = doc(db, "Caja", "FEBRERO2025");
-      const febrero2025Doc = await getDoc(febrero2025Ref);
-
-      if (!febrero2025Doc.exists()) {
-        await setDoc(febrero2025Ref, {
-          [`${currentDate}`]: {
-            serviceCount: 1,
-            serviceValue: price + tip // Añadir el valor total recibido
-          }
+        const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+        const currentMonthYear = `${monthNames[now.getMonth()]}${now.getFullYear()}`;
+        const monthYearRef = doc(db, "Caja", currentMonthYear);
+        await updateDoc(monthYearRef, {
+            [`${currentDate}.serviceCount`]: increment(1),
+            [`${currentDate}.serviceValue`]: increment(price + tip)
         });
-      } else {
-        await updateDoc(febrero2025Ref, {
-          [`${currentDate}.serviceCount`]: increment(1),
-          [`${currentDate}.serviceValue`]: increment(price + tip) // Añadir el valor total recibido
+
+        const movimientoId = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+        const movimientoData = {
+            date: formattedDate,
+            time: formattedTime,
+            value: price + tip,
+            type: "INGRESO",
+            responsible: adminName,
+            paymentMethod: formData.metodoPago.toUpperCase(),
+            description: formData.servicio
+        };
+
+        await setDoc(doc(db, "Caja", "Movimientos"), { [movimientoId]: movimientoData }, { merge: true });
+
+        const paymentMethodRef = doc(db, "MetodosDePago", formData.metodoPago.toUpperCase());
+        await updateDoc(paymentMethodRef, {
+            [`${currentDate}.amount`]: increment(price + tip)
         });
-      }
 
-      // Register movement in Movimientos
-      const now = new Date();
-      const movimientoId = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-      const movimientoData = {
-        date: now.toISOString().split('T')[0], // Fecha actual
-        time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Hora actual
-        value: price + tip, // Set value to the total amount received
-        type: "INGRESO",
-        responsible: adminName, // Use adminName prop
-        paymentMethod: formData.metodoPago.toUpperCase(), // Save payment method in uppercase
-        description: formData.servicio // Add service description
-      };
-      await setDoc(doc(db, "Caja", "Movimientos"), { [movimientoId]: movimientoData }, { merge: true });
-
-      toast.success('Cliente y venta registrada', {
-        autoClose: 1000,
-        onClose: onClose // Close the modal after the toast is closed
-      });
+        toast.success('Cliente y venta registrada', {
+            autoClose: 1000,
+            onClose: onClose
+        });
     } catch (error) {
-      console.error("Error adding document: ", error);
+        console.error("Error adding document: ", error);
     } finally {
-      setLoading(false); // Set loading to false after processing
+        setLoading(false);
     }
-  };
+};
+
 
   if (!isOpen) return null;
 
   return (
     <div className="diary-modal" onClick={onClose}>
+      {loading && <LoadingScreen />} {/* Show LoadingScreen when loading */}
       <div className="diary-content" onClick={(e) => e.stopPropagation()}>
         <h2>Añadir Servicio Realizado</h2>
         <form onSubmit={handleSubmit}>
           <label>
             Nombre:
-            <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+            <input 
+              type="text" 
+              name="nombre" 
+              value={formData.nombre} 
+              onChange={handleChange} 
+              required 
+              placeholder="Ingrese el nombre" 
+            />
           </label>
           <label>
             Apellido:
-            <input type="text" name="apellido" value={formData.apellido} onChange={handleChange} required />
+            <input 
+              type="text" 
+              name="apellido" 
+              value={formData.apellido} 
+              onChange={handleChange} 
+              required 
+              placeholder="Ingrese el apellido" 
+            />
           </label>
           <label>
             Teléfono:
-            <input type="tel" name="telefono" value={formData.telefono} onChange={handleChange} required />
+            <input 
+              type="tel" 
+              name="telefono" 
+              value={formData.telefono} 
+              onChange={handleChange} 
+              required 
+              placeholder="Ingrese el número de teléfono" 
+            />
           </label>
           <label>
             Correo:
-            <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
+            <input 
+              type="email" 
+              name="correo" 
+              value={formData.correo} 
+              onChange={handleChange} 
+              required 
+              placeholder="Ingrese el correo electrónico" 
+            />
           </label>
           <label>
             Servicio:
             <select name="servicio" value={formData.servicio} onChange={handleChange} required>
               <option value="">Seleccione un servicio</option>
               {services.map((service, index) => (
-                <option key={index} value={service.name}>{service.name === "BARBA" ? "BARBA" : service.name}</option>
+                <option key={index} value={service.name}>{service.name}</option>
               ))}
             </select>
           </label>
@@ -278,12 +292,20 @@ function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser pro
               <option value="DAVIPLATA">Daviplata</option>
               <option value="TARJETA">Tarjeta</option>
               <option value="EFECTIVO">Efectivo</option>
+              <option value="ITAU">Itaú</option> {/* Add Itaú option */}
             </select>
           </label>
           {formData.metodoPago === "EFECTIVO" && (
             <label>
               Efectivo Recibido:
-              <input type="text" name="efectivoRecibido" value={formData.efectivoRecibido} onChange={handleChange} required />
+              <input 
+                type="text" 
+                name="efectivoRecibido" 
+                value={formData.efectivoRecibido} 
+                onChange={handleChange} 
+                required 
+                placeholder="Ingrese el monto recibido"
+              />
               <div>Vuelto: {calculateChange() >= 0 ? `$${calculateChange().toLocaleString("es-ES")}` : "Monto insuficiente"}</div>
             </label>
           )}
@@ -294,12 +316,46 @@ function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser pro
           {formData.propina && (
             <label>
               Valor de la Propina:
-              <input type="text" name="valorPropina" value={formData.valorPropina} onChange={handleChange} required />
+              <input 
+                type="text" 
+                name="valorPropina" 
+                value={formData.valorPropina} 
+                onChange={handleChange} 
+                required 
+                placeholder="Ingrese el valor de la propina"
+              />
             </label>
           )}
+          
+          {/* Checkbox Alimentando */}
+          <label className="alimentando-label">
+            <input type="checkbox" name="alimentando" checked={formData.alimentando} onChange={handleChange} />
+            Alimentando
+          </label>
+          {formData.alimentando && (
+            <label>
+              Fecha de Alimentación:
+              <input 
+                type="date" 
+                name="fechaAlimentacion" 
+                value={formData.fechaAlimentacion} 
+                onChange={handleChange} 
+                required 
+                className="tablero-input"
+              />
+            </label>
+          )}
+  
           <label>
             Precio:
-            <input type="text" name="precio" value={formData.precio} readOnly className="readonly-input" />
+            <input 
+              type="text" 
+              name="precio" 
+              value={formData.precio} 
+              onChange={handleChange} 
+              className="readonly-input" 
+              readOnly 
+            />
           </label>
           <button type="submit" disabled={loading}>
             {loading ? "Procesando..." : <><FaCheck /> Servicio Realizado</>}
@@ -312,6 +368,8 @@ function Diary({ adminName, isOpen, onClose }) { // Remove authenticatedUser pro
       <ToastContainer />
     </div>
   );
+  
+  
 }
 
 export default Diary;

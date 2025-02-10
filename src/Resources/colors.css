@@ -1,8 +1,11 @@
 :root {
     --color-primario: #353a40;/*hover de aceptar*/
+    --color-fondo: #0b0e10 ;/*color de fondo*/
     --color-secundario: #495058; /*hover de aceptar*/
     --color-terciario: #6c757c;/*hover de aceptar*/
     --color-claro: #adb6bd;/*hover de aceptar*/
     --color-muy-claro: #cfd4da;/*hover de aceptar*/
+    --color-pagado: #1ed760;/*pagado*/
+    --color-sinpagar: #ff000079;/*sin pagar*/
     --blanco: #ffffff;/*hover de aceptar*/
 }

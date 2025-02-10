@@ -14,12 +14,12 @@ import Servicio from "../Servicios/Servicios.js";
 import Diary from "./Diary/Diary.js"; // Import Diary component
 import CashBox from "./CashBox/CashBox"; // Import CashBox component
 import Dashboard from "./Dashboard/Dashboard"; // Import Dashboard component
-import { FaUserTie, FaPlus, FaCalendarAlt, FaCashRegister, FaSignOutAlt, FaBookOpen } from 'react-icons/fa'; // Import new icon
+import Transfer from "./Transfer/Transfer"; // Import Transfer component
+import { FaUserTie, FaPlus, FaCalendarAlt, FaCashRegister, FaSignOutAlt, FaBookOpen, FaExchangeAlt } from 'react-icons/fa'; // Import new icon
+import rbsquare from '../Resources/RBSQUARE.png'; // Import the image
 
 function HomeAdmin() {
-  const [isAddBarberModalOpen, setIsAddBarberModalOpen] = useState(false);
-  const [isAddServiceModalOpen, setIsAddServiceModalOpen] = useState(false);
-  const [isViewDateModalOpen, setIsViewDateModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(null); // New state to track which modal is open
   const [adminName, setAdminName] = useState("");
   const [adminPhoto, setAdminPhoto] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -27,8 +27,6 @@ function HomeAdmin() {
   const [loadingServices, setLoadingServices] = useState(true);
   const [user] = useAuthState(auth);
   const [showServicios, setShowServicios] = useState(false);
-  const [isDiaryModalOpen, setIsDiaryModalOpen] = useState(false); // New state for Diary modal
-  const [isCashBoxModalOpen, setIsCashBoxModalOpen] = useState(false); // New state for CashBox modal
 
   useEffect(() => {
     const fetchAdminDetails = async () => {
@@ -79,6 +77,10 @@ function HomeAdmin() {
     }
   };
 
+  const handleReload = () => {
+    window.location.reload();
+  };
+
   if (loadingServices) {
     return <LoadingScreen />;
   }
@@ -91,21 +93,28 @@ function HomeAdmin() {
     <div className="dashboard-container">
       <div className="sidebar">
         <ul>
-          <li onClick={() => setIsAddBarberModalOpen(true)} title="Ver Barberos">
+          <li title="Servicios" onClick={handleReload}>
+            <img src={rbsquare} alt="RB Square" className="sidebar-image" />
+          </li>
+          <li onClick={() => setOpenModal('addBarber')} title="Ver Barberos">
             <FaUserTie size={24} />
           </li>
-          <li onClick={() => setIsAddServiceModalOpen(true)} title="Ver Servicios">
+          <li onClick={() => setOpenModal('addService')} title="Ver Servicios">
             <FaPlus size={24} />
           </li>
-          <li onClick={() => setIsViewDateModalOpen(true)} title="Ver Citas">
+          <li onClick={() => setOpenModal('viewDate')} title="Ver Citas">
             <FaCalendarAlt size={24} />
           </li>
-          <li onClick={() => setIsDiaryModalOpen(true)} title="Diario">
+          <li onClick={() => setOpenModal('diary')} title="Diario">
             <FaBookOpen size={24} />
             <span className="new-ribbon-icon">NEW</span>
           </li>
-          <li onClick={() => setIsCashBoxModalOpen(true)} title="Caja">
+          <li onClick={() => setOpenModal('cashBox')} title="Caja">
             <FaCashRegister size={24} />
+            <span className="new-ribbon-icon">NEW</span>
+          </li>
+          <li onClick={() => setOpenModal('transfer')} title="Transferencia"> {/* New icon for Transferencia */}
+            <FaExchangeAlt size={24} />
             <span className="new-ribbon-icon">NEW</span>
           </li>
           <li onClick={handleSignOut} title="Cerrar Sesión">
@@ -117,11 +126,12 @@ function HomeAdmin() {
         <Dashboard adminName={adminName} adminPhoto={adminPhoto} /> {/* Pass props to Dashboard */}
       </div>
 
-      {isAddBarberModalOpen && <AddBarber isOpen={isAddBarberModalOpen} onClose={() => setIsAddBarberModalOpen(false)} />}
-      {isAddServiceModalOpen && <AddService isOpen={isAddServiceModalOpen} onClose={() => setIsAddServiceModalOpen(false)} />}
-      {isViewDateModalOpen && <ViewDate isOpen={isViewDateModalOpen} onClose={() => setIsViewDateModalOpen(false)} />}
-      {isDiaryModalOpen && <Diary adminName={adminName} isOpen={isDiaryModalOpen} onClose={() => setIsDiaryModalOpen(false)} />}
-      {isCashBoxModalOpen && <CashBox adminName={adminName} isOpen={isCashBoxModalOpen} onClose={() => setIsCashBoxModalOpen(false)} />}
+      {openModal === 'addBarber' && <AddBarber adminName={adminName} isOpen={true} onClose={() => setOpenModal(null)} />}
+      {openModal === 'addService' && <AddService isOpen={true} onClose={() => setOpenModal(null)} />}
+      {openModal === 'viewDate' && <ViewDate isOpen={true} onClose={() => setOpenModal(null)} />}
+      {openModal === 'diary' && <Diary adminName={adminName} isOpen={true} onClose={() => setOpenModal(null)} />}
+      {openModal === 'cashBox' && <CashBox adminName={adminName} isOpen={true} onClose={() => setOpenModal(null)} />}
+      {openModal === 'transfer' && <Transfer adminName={adminName} isOpen={true} onClose={() => setOpenModal(null)} />} {/* Add Transfer component */}
     </div>
   );
 }

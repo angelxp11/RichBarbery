@@ -1,155 +1,186 @@
 /* Container for all services */
 .services-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  margin-left: 50px; /* Adjust margin to account for sidebar */
+  transition: margin-left 0.3s;
+}
+
+/* Individual service card styling */
+.service-card {
+  background-color: var(--color-claro);
+  border: 1px solid var(--color-muy-claro);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 200px; /* Asegura un mínimo alto para la tarjeta */
+}
+
+/* Service name styling */
+.service-name {
+  font-size: 25px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: var(--color-primario);
+}
+
+/* Service observations styling */
+.service-observations {
+  font-size: 16px;
+  color: var(--color-primario);
+  line-height: 1.4;
+  flex-grow: 1; /* Permite que la sección de observaciones crezca */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Trunca el texto largo */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-bottom: 10px; /* Espacio entre observaciones y duración */
+}
+
+/* Service duration styling */
+.service-duration {
+  font-size: 20px;
+  color: var(--color-primario);
+  margin-bottom: 1px; /* Espacio entre duración y precio */
+  font-weight: bold;
+}
+
+/* Service price styling */
+.service-price {
+  font-size: 20px;
+  color: var(--color-primario);
+  font-weight: bold;
+  margin-bottom: 10px; /* Espacio entre precio y botón */
+}
+
+/* Reserve button styling */
+.reserve-button {
+  margin-top: auto; /* Empuja el botón a la parte inferior */
+  padding: 10px 15px;
+  background-color: var(--color-primario);
+  color: var(--blanco);
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reserve-button:hover {
+  background-color: var(--color-terciario);
+}
+
+/* Loading and no-services message styling */
+.loading,
+.no-services {
+  text-align: center;
+  font-size: 18px;
+  margin: 20px 0;
+  color: #fff;
+}
+
+/* Background animation */
+.background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-fondo) url('../Resources/background.png') repeat;
+  background-size: 250px 250px;
+  background-attachment: fixed;
+  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: backgroundAnimation 60s linear infinite; /* Slow and continuous animation */
+}
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 0%;
   }
-  
-  /* Individual service card styling */
-  .service-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    min-height: 200px; /* Asegura un mínimo alto para la tarjeta */
+  100% {
+    background-position: 100% 0%;
   }
-  
-  /* Service name styling */
-  .service-name {
-    font-size: 25px;
-    font-weight: bold;
-    margin: 0 0 10px 0;
-  }
-  
-  /* Service observations styling */
-  .service-observations {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.4;
-    flex-grow: 1; /* Permite que la sección de observaciones crezca */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Trunca el texto largo */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    margin-bottom: 10px; /* Espacio entre observaciones y duración */
-  }
-  
-  /* Service duration styling */
-  .service-duration {
-    font-size: 20px;
-    color: #555;
-    margin-bottom: 1px; /* Espacio entre duración y precio */
-    font-weight: bold;
-  }
-  
-  /* Service price styling */
-  .service-price {
-    font-size: 20px;
-    color: #28a745;
-    font-weight: bold;
-    margin-bottom: 10px; /* Espacio entre precio y botón */
-  }
-  
-  /* Reserve button styling */
-  .reserve-button {
-    margin-top: auto; /* Empuja el botón a la parte inferior */
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .reserve-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Loading and no-services message styling */
-  .loading,
-  .no-services {
-    text-align: center;
-    font-size: 18px;
-    margin: 20px 0;
-    color: #fff;
-  }
-  
-  /* Background animation */
-  .background {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #292929, #0f0f0f);
-    background-size: 400% 400%;
-    animation: backgroundAnimation 10s ease infinite;
-    overflow: hidden;
-    overflow-y: auto;
-  }
-  
-  @keyframes backgroundAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
-  /* Welcome title styling */
-  .welcome-title,
-  .welcome-Subtitle {
-    text-align: center;
-    font-size: 2rem;
-    margin: 20px 0;
-    color: #fff;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .inicio-button {
-    position: fixed; /* Cambiar a fixed para que se quede fijo en la pantalla */
-    bottom: 10px; /* Colocarlo a 10px del fondo de la pantalla */
-    left: 10px; /* Colocarlo a 10px de la izquierda de la pantalla */
-    background-color: #4CAF50; /* Color de fondo verde */
-    color: white; /* Color del texto */
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-  }
-  
-  .inicio-button:hover {
-    background-color: #45a049; /* Color de fondo cuando el cursor pasa sobre el botón */
-  }
-  
-    
-  .logout-button {
-    position: fixed; /* Cambiar a fixed para que se quede fijo en la pantalla */
-    bottom: 10px; /* Colocarlo a 20px del borde superior de la pantalla */
-    right: 10px; /* Colocarlo a 10px de la izquierda de la pantalla */
-    background-color: #ed1b24; /* Color de fondo rojo */
-    color: white; /* Color del texto */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .logout-button:hover {
-    background-color: #c0171e; /* Color más oscuro cuando el cursor pasa sobre el botón */
-  }
+}
+
+@font-face {
+  font-family: 'Horizon';
+  src: url('../Resources/horizon.otf') format('truetype');
+}
+
+/* Welcome title styling */
+.welcome-title,
+.welcome-Subtitle {
+  text-align: center;
+  font-size: 2.5rem; /* Increase font size */
+  margin: 20px 0;
+  color: #fff;
+  font-family: 'Horizon', sans-serif;
+  margin-left: 100px; /* Adjust margin to account for sidebar */
+  transition: margin-left 0.3s;
+}
+
+.sidebar {
+  width: 100px;
+  background-color: #000000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 1000;
+  transition: width 0.3s;
+}
+
+.sidebar:hover {
+  width: 200px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.sidebar ul li:hover {
+  background-color: #181818;
+  transform: scale(1.2);
+}
+
+.sidebar-image {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+}
+
+.user-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.sidebar:hover ~ .services-container,
+.sidebar:hover ~ .welcome-title,
+.sidebar:hover ~ .welcome-Subtitle {
+  margin-left: 200px; /* Adjust margin when sidebar is hovered */
+}

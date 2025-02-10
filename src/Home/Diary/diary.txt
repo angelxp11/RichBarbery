@@ -1,0 +1,146 @@
+
+
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading to true on submit
+    try {
+      for (let i = 0; i < 20; i++) {
+        const now = new Date();
+        now.setDate(now.getDate() - i); // Decrement date by i days
+        const formattedDate = now.toISOString().split('T')[0];
+        const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const currentDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`; // Use current date in YYYYMMDD format
+
+        const docRef = doc(db, "Clientes", formData.correo);
+        await setDoc(docRef, {
+          name: formData.nombre,
+          surname: formData.apellido,
+          phone: formData.telefono
+        });
+
+        const price = parseFloat(formData.precio.replace(/\./g, "").replace(/[^0-9.-]+/g, ""));
+        const tip = formData.propina ? parseFloat(formData.valorPropina.replace(/\./g, "").replace(/[^0-9.-]+/g, "")) : 0; // Get the tip value
+
+        // Ensure Ganancias document exists
+        const gananciasRef = doc(db, "Caja", "Ganancias");
+        const gananciasDoc = await getDoc(gananciasRef);
+        if (!gananciasDoc.exists()) {
+          await setDoc(gananciasRef, { [currentDate]: { amount: 0 } });
+        }
+        await updateDoc(gananciasRef, {
+          [`${currentDate}.amount`]: increment(price * 0.4) // Añadir el 40% del precio a Ganancias
+        });
+
+        // Ensure Saldo document exists
+        const saldoRef = doc(db, "Caja", "Saldo");
+        const saldoDoc = await getDoc(saldoRef);
+        if (!saldoDoc.exists()) {
+          await setDoc(saldoRef, { [currentDate]: { amount: 0 } }); // Use currentDate instead of currentDateTime
+        }
+        await updateDoc(saldoRef, {
+          [`${currentDate}.amount`]: increment(price + tip) // Añadir el precio completo y la propina a Saldo
+        });
+
+        // Crear una reservación con estado "Completada"
+        const reservationData = {
+          date: formattedDate, // Fecha actual en formato YYYY-MM-DD
+          time: formattedTime, // Hora actual
+          barberId: barbers.find(barber => barber.name === formData.barbero).id,
+          barberName: formData.barbero,
+          serviceName: formData.servicio,
+          duration: 60, // Duración predeterminada
+          price: price,
+          clientName: `${formData.nombre} ${formData.apellido}`,
+          clientPhone: formData.telefono,
+          clientId: formData.correo,
+          status: "Completada",
+          paymentMethod: formData.metodoPago.toUpperCase() // Save payment method in uppercase
+        };
+
+        await addDoc(collection(db, 'Reservaciones'), reservationData);
+
+        // Actualizar o crear documento en Caja para el barbero
+        const barberId = reservationData.barberId;
+        const barberCajaRef = doc(db, "Caja", barberId);
+        const barberCajaDoc = await getDoc(barberCajaRef);
+
+        if (!barberCajaDoc.exists()) {
+          await setDoc(barberCajaRef, {
+            [currentDate]: { 
+              amount: price * 0.6, 
+              tip: tip, 
+              tippaid: false, 
+              amountpaid: false,
+              paymentMethod: formData.metodoPago.toUpperCase() // Add payment method
+            }
+          });
+        } else {
+          await updateDoc(barberCajaRef, {
+            [`${currentDate}.amount`]: increment(price * 0.6), 
+            [`${currentDate}.tip`]: increment(tip), 
+            [`${currentDate}.tippaid`]: false, 
+            [`${currentDate}.amountpaid`]: false,
+            [`${currentDate}.paymentMethod`]: formData.metodoPago.toUpperCase() // Add payment method
+          });
+        }
+
+        // Actualizar contador de servicios y valor del servicio en el mes y año actuales
+        const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+        const currentMonthYear = `${monthNames[now.getMonth()]}${now.getFullYear()}`;
+        const monthYearRef = doc(db, "Caja", currentMonthYear);
+        const monthYearDoc = await getDoc(monthYearRef);
+
+        if (!monthYearDoc.exists()) {
+          await setDoc(monthYearRef, {
+            [`${currentDate}`]: {
+              serviceCount: 1,
+              serviceValue: price + tip // Añadir el valor total recibido
+            }
+          });
+        } else {
+          await updateDoc(monthYearRef, {
+            [`${currentDate}.serviceCount`]: increment(1),
+            [`${currentDate}.serviceValue`]: increment(price + tip) // Añadir el valor total recibido
+          });
+        }
+
+        // Register movement in Movimientos
+        const movimientoId = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+        const movimientoData = {
+          date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`, // Fecha actual en formato YYYY-MM-DD
+          time: formattedTime, // Hora actual
+          value: price + tip, // Set value to the total amount received
+          type: "INGRESO",
+          responsible: adminName, // Use adminName prop
+          paymentMethod: formData.metodoPago.toUpperCase(), // Save payment method in uppercase
+          description: formData.servicio // Add service description
+        };
+        await setDoc(doc(db, "Caja", "Movimientos"), { [movimientoId]: movimientoData }, { merge: true });
+
+        
+        // Actualizar documento del método de pago
+        const paymentMethodRef = doc(db, "MetodosDePago", formData.metodoPago.toUpperCase());
+        const paymentMethodDoc = await getDoc(paymentMethodRef);
+
+        if (!paymentMethodDoc.exists()) {
+          await setDoc(paymentMethodRef, {
+            [currentDate]: { amount: price + tip }
+          });
+        } else {
+          await updateDoc(paymentMethodRef, {
+            [`${currentDate}.amount`]: increment(price + tip)
+          });
+        }
+      }
+
+      toast.success('Cliente y venta registrada', {
+        autoClose: 1000,
+        onClose: onClose // Close the modal after the toast is closed
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    } finally {
+      setLoading(false); // Set loading to false after processing
+    }
+  };

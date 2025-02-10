@@ -8,6 +8,7 @@ import { db } from '../firebase';
 import LoadingScreen from '../Resources/LoadingScreen/LoadingScreen.js'; 
 import HomeUser from '../HomeUser/homeUser'; 
 import Login from '../Login/Login'; // Importa el componente HomeUser
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los iconos de ojo
 
 function Register() {
   const [nombre, setNombre] = useState('');
@@ -120,6 +121,7 @@ function Register() {
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             required
+            placeholder="Ingrese su nombre"
           />
         </div>
 
@@ -131,6 +133,7 @@ function Register() {
             value={apellido}
             onChange={(e) => setApellido(e.target.value)}
             required
+            placeholder="Ingrese su apellido"
           />
         </div>
 
@@ -154,6 +157,7 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Ingrese su correo electrónico"
           />
         </div>
 
@@ -166,14 +170,15 @@ function Register() {
               placeholder="Ingrese su contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="login-input-password-toggle"
+              className="register-input"
               required
             />
             <span
               className="password-toggle-icon-login"
               onClick={togglePasswordVisibility}
+              style={{ position: 'absolute', right: '10px', cursor: 'pointer' }} // Adjust position
             >
-              {passwordVisible ? '🙈' : '👁️'}
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
         </div>
@@ -187,14 +192,15 @@ function Register() {
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="login-input-password-toggle"
+              className="register-input"
               required
             />
             <span
               className="password-toggle-icon-login"
               onClick={toggleConfirmPasswordVisibility}
+              style={{ position: 'absolute', right: '10px', cursor: 'pointer' }} // Adjust position
             >
-              {confirmPasswordVisible ? '🙈' : '👁️'}
+              {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
         </div>

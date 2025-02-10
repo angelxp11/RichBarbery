@@ -10,6 +10,7 @@ import HomeUser from '../HomeUser/homeUser';
 import Register from '../Register/Register';
 import LoadingScreen from '../Resources/LoadingScreen/LoadingScreen.js';
 import GoogleLogo from '../Resources/google-logo.svg';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import the icons
 
 
 const Login = () => {
@@ -134,8 +135,9 @@ const Login = () => {
             <span
               className="password-toggle-icon-login"
               onClick={() => setShowPassword(!showPassword)}
+              style={{ position: 'absolute', right: '10px', cursor: 'pointer' }} // Adjust position
             >
-              {showPassword ? '🙈' : '👁️'}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
         </div>
